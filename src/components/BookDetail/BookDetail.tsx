@@ -50,7 +50,7 @@ export function BookDetail({ book, onClose, onMarkAsRead, onRemove }: BookDetail
       <div
         className={`fixed z-50 bg-[var(--color-surface)] overflow-y-auto overscroll-contain
           bottom-0 left-0 right-0 max-h-[90vh] rounded-t-2xl shadow-[0_-4px_40px_rgba(0,0,0,0.08)]
-          md:top-0 md:right-0 md:bottom-0 md:left-auto md:max-h-none md:w-[440px] md:rounded-none md:shadow-[_-8px_0_40px_rgba(0,0,0,0.06)]
+          md:top-0 md:right-0 md:bottom-0 md:left-auto md:max-h-none md:w-[440px] md:rounded-none md:shadow-[-8px_0_40px_rgba(0,0,0,0.1)]
           transition-transform duration-300 drawer-timing
           ${isVisible
             ? 'translate-y-0 md:translate-x-0'

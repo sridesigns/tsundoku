@@ -164,17 +164,22 @@ export function AddBookModal({ isOpen, onClose }: AddBookModalProps) {
         onClick={handleClose}
       />
 
-      {/* Bottom sheet */}
+      {/* Desktop: centered modal / Mobile: bottom sheet */}
       <div
-        className={`fixed bottom-0 left-0 right-0 z-50 bg-[var(--color-surface)] rounded-t-2xl max-h-[92vh] overflow-y-auto overscroll-contain transition-transform duration-300 drawer-timing safe-bottom shadow-[0_-4px_40px_rgba(0,0,0,0.08)]
-          ${isVisible ? 'translate-y-0' : 'translate-y-full'}`}
+        className={`fixed z-50 bg-[var(--color-surface)] overflow-y-auto overscroll-contain transition-all duration-300 drawer-timing
+          bottom-0 left-0 right-0 max-h-[92vh] rounded-t-2xl safe-bottom shadow-[0_-4px_40px_rgba(0,0,0,0.08)]
+          md:bottom-auto md:left-1/2 md:top-1/2 md:right-auto md:-translate-x-1/2 md:rounded-2xl md:w-full md:max-w-lg md:max-h-[85vh] md:shadow-[0_24px_80px_rgba(0,0,0,0.15),_0_8px_24px_rgba(0,0,0,0.08)]
+          ${isVisible
+            ? 'translate-y-0 md:-translate-y-1/2 opacity-100 scale-100'
+            : 'translate-y-full md:translate-y-0 md:-translate-y-1/2 md:opacity-0 md:scale-95'
+          }`}
       >
-        {/* Drag indicator */}
-        <div className="flex justify-center pt-3 pb-1 sticky top-0 bg-[var(--color-surface)] z-10">
+        {/* Mobile drag indicator */}
+        <div className="md:hidden flex justify-center pt-3 pb-1 sticky top-0 bg-[var(--color-surface)] z-10">
           <div className="w-8 h-1 rounded-full bg-[var(--color-border-strong)]" />
         </div>
 
-        <div className="px-5 md:px-8 pt-3 pb-8">
+        <div className="px-5 md:px-8 pt-3 md:pt-6 pb-8">
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
             <h2 className="font-display text-[22px] text-[var(--color-ink)] tracking-[-0.01em]">

@@ -45,7 +45,7 @@ export function DesktopNav() {
   const pathname = usePathname()
 
   return (
-    <aside className="hidden md:flex flex-col w-60 h-screen fixed left-0 top-0 bg-[var(--color-surface)] border-r border-[var(--color-border)] z-40">
+    <aside className="hidden md:flex flex-col w-60 h-screen fixed left-0 top-0 bg-[var(--color-surface)] border-r border-[var(--color-border)] z-40 shadow-[1px_0_8px_rgba(0,0,0,0.04)]">
       {/* Brand */}
       <div className="px-8 pt-10 pb-12">
         <h1 className="font-display text-[22px] tracking-[-0.01em] text-[var(--color-ink)]">

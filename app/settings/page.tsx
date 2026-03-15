@@ -89,7 +89,7 @@ export default function SettingsPage() {
           />
           <button
             onClick={handleSaveKey}
-            className="px-5 py-3 text-[13px] font-sans tracking-[0.01em] bg-[var(--color-ink)] text-[var(--color-bg)] hover:bg-[var(--color-ink)]/90 transition-colors duration-200"
+            className="px-5 py-3 text-[13px] font-sans tracking-[0.01em] bg-[var(--color-ink)] text-[var(--color-bg)] hover:opacity-90 transition-all duration-200"
           >
             Save
           </button>

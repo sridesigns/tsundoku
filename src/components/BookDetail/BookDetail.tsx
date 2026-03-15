@@ -133,7 +133,7 @@ export function BookDetail({ book, onClose, onMarkAsRead, onRemove }: BookDetail
             <div className="flex gap-3">
               <button
                 onClick={() => onMarkAsRead(book.id)}
-                className="flex-1 py-3.5 text-[13px] font-sans tracking-[0.01em] bg-[var(--color-ink)] text-[var(--color-bg)] hover:bg-[var(--color-ink)]/90 transition-colors duration-200"
+                className="flex-1 py-3.5 text-[13px] font-sans tracking-[0.01em] bg-[var(--color-ink)] text-[var(--color-bg)] hover:opacity-90 transition-all duration-200"
               >
                 Mark as Read
               </button>

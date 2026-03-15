@@ -67,7 +67,7 @@ export function DesktopNav() {
               className={`flex items-center gap-3.5 px-4 py-2.5 text-[13px] font-sans tracking-[0.01em] transition-all duration-200 ${
                 active
                   ? 'text-[var(--color-ink)] bg-[var(--color-surface-raised)] font-medium'
-                  : 'text-[var(--color-ink-secondary)] hover:text-[var(--color-ink)] hover:bg-[var(--color-surface-raised)]/50'
+                  : 'text-[var(--color-ink-secondary)] hover:text-[var(--color-ink)] hover:bg-[var(--color-surface-raised)]'
               }`}
             >
               <NavIcon icon={item.icon} active={active} />
@@ -91,7 +91,7 @@ export function MobileNav() {
   const pathname = usePathname()
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[var(--color-surface)]/95 backdrop-blur-md border-t border-[var(--color-border)] z-40 safe-bottom">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 backdrop-blur-md border-t border-[var(--color-border)] z-40 safe-bottom" style={{ backgroundColor: 'rgba(255, 255, 255, 0.95)' }}>
       <div className="flex">
         {navItems.map((item) => {
           const active = pathname === item.href

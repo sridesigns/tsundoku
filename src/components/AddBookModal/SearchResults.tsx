@@ -45,7 +45,7 @@ export function SearchResults({ results, isSearching, isAdding, onSelect }: Sear
               key={result.open_library_key}
               onClick={() => onSelect(result)}
               disabled={isAdding}
-              className="w-full flex items-center gap-4 py-3.5 text-left border-b border-[var(--color-border)] last:border-b-0 hover:bg-[var(--color-surface-raised)]/50 transition-colors duration-200 disabled:opacity-40 animate-fadeInUp"
+              className="w-full flex items-center gap-4 py-3.5 text-left border-b border-[var(--color-border)] last:border-b-0 hover:bg-[var(--color-surface-raised)] transition-colors duration-200 disabled:opacity-40 animate-fadeInUp"
               style={{ animationDelay: `${i * 60}ms` }}
             >
               {/* Cover */}

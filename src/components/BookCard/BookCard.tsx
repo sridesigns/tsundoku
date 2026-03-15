@@ -17,7 +17,7 @@ export function BookCard({ book, index, viewMode, onClick }: BookCardProps) {
     return (
       <button
         onClick={() => onClick(book)}
-        className="w-full flex items-center gap-4 px-1 py-4 text-left border-b border-[var(--color-border)] hover:bg-[var(--color-surface-raised)]/50 transition-colors duration-200 animate-fadeInUp"
+        className="w-full flex items-center gap-4 px-1 py-4 text-left border-b border-[var(--color-border)] hover:bg-[var(--color-surface-raised)] transition-colors duration-200 animate-fadeInUp"
         style={{ animationDelay: `${delay}ms` }}
       >
         {/* Cover thumbnail */}

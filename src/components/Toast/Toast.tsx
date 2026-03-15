@@ -23,20 +23,23 @@ function ToastItem({ toast, onDismiss }: { toast: ToastData; onDismiss: (id: str
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    requestAnimationFrame(() => setVisible(true))
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => setVisible(true))
+    })
     const timer = setTimeout(() => {
       setVisible(false)
-      setTimeout(() => onDismiss(toast.id), 220)
+      setTimeout(() => onDismiss(toast.id), 300)
     }, 3000)
     return () => clearTimeout(timer)
   }, [toast.id, onDismiss])
 
   return (
     <div
-      className="font-sans text-sm px-4 py-3 bg-[var(--color-ink)] text-[var(--color-bg)] shadow-lg transition-all duration-220"
+      className="font-sans text-[13px] tracking-[0.01em] px-5 py-3.5 bg-[var(--color-ink)] text-[var(--color-bg)] shadow-[0_8px_32px_rgba(0,0,0,0.12)] transition-all duration-300"
       style={{
         opacity: visible ? 1 : 0,
-        transform: visible ? 'translateY(0)' : 'translateY(8px)',
+        transform: visible ? 'translateY(0) scale(1)' : 'translateY(8px) scale(0.98)',
+        transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
       }}
     >
       {toast.message}
@@ -59,9 +62,11 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   return (
     <ToastContext.Provider value={{ showToast }}>
       {children}
-      <div className="fixed bottom-20 right-4 md:bottom-6 md:right-6 z-50 flex flex-col gap-2">
+      <div className="fixed bottom-[88px] md:bottom-8 left-4 right-4 md:left-auto md:right-8 z-[60] flex flex-col items-center md:items-end gap-2 pointer-events-none">
         {toasts.map((t) => (
-          <ToastItem key={t.id} toast={t} onDismiss={dismiss} />
+          <div key={t.id} className="pointer-events-auto">
+            <ToastItem toast={t} onDismiss={dismiss} />
+          </div>
         ))}
       </div>
     </ToastContext.Provider>

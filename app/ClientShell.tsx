@@ -11,8 +11,8 @@ export function ClientShell({ children }: { children: ReactNode }) {
       <ToastProvider>
         <DesktopNav />
         <MobileNav />
-        <main className="md:ml-60 pb-20 md:pb-0 min-h-screen">
-          <div className="max-w-[960px] mx-auto px-4 md:px-8 py-6 md:py-10">
+        <main className="md:ml-60 pb-[72px] md:pb-0 min-h-screen">
+          <div className="max-w-[960px] mx-auto px-5 md:px-10 py-8 md:py-12">
             {children}
           </div>
         </main>

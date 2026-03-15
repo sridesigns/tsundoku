@@ -64,21 +64,25 @@ export default function CollectionPage() {
     showToast(`Removed "${book?.title}"`)
   }
 
+  // Loading state
   if (isLoading) {
     return (
       <div>
-        <div className="mb-8">
-          <h1 className="font-display text-3xl text-[var(--color-ink)]">Collection</h1>
-        </div>
-        <div className={viewMode === 'grid' ? 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6' : ''}>
+        <header className="mb-10">
+          <h1 className="font-display text-[28px] md:text-[34px] text-[var(--color-ink)] tracking-[-0.01em]">
+            Collection
+          </h1>
+        </header>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
           {Array.from({ length: 8 }).map((_, i) => (
-            <BookCardSkeleton key={i} viewMode={viewMode} />
+            <BookCardSkeleton key={i} viewMode="grid" />
           ))}
         </div>
       </div>
     )
   }
 
+  // Empty state
   if (activeBooks.length === 0) {
     return (
       <>
@@ -90,13 +94,14 @@ export default function CollectionPage() {
 
   return (
     <>
-      <div className="mb-8 flex items-center justify-between">
-        <h1 className="font-display text-3xl text-[var(--color-ink)]">Collection</h1>
-        <span className="font-mono text-xs text-[var(--color-ink-tertiary)]">
-          {filteredBooks.length} {filteredBooks.length === 1 ? 'book' : 'books'}
-        </span>
-      </div>
+      {/* Header */}
+      <header className="mb-8 md:mb-10">
+        <h1 className="font-display text-[28px] md:text-[34px] text-[var(--color-ink)] tracking-[-0.01em]">
+          Collection
+        </h1>
+      </header>
 
+      {/* Filters */}
       <FilterBar
         genres={genres}
         activeGenre={activeGenre}
@@ -105,10 +110,12 @@ export default function CollectionPage() {
         onSortChange={setSort}
         viewMode={viewMode}
         onViewModeChange={setViewMode}
+        count={filteredBooks.length}
       />
 
+      {/* Grid */}
       {viewMode === 'grid' ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-6 md:gap-x-6 md:gap-y-8">
           {filteredBooks.map((book, i) => (
             <BookCard
               key={book.id}
@@ -120,7 +127,7 @@ export default function CollectionPage() {
           ))}
         </div>
       ) : (
-        <div className="border-t border-[var(--color-border)]">
+        <div>
           {filteredBooks.map((book, i) => (
             <BookCard
               key={book.id}
@@ -136,10 +143,12 @@ export default function CollectionPage() {
       {/* FAB */}
       <button
         onClick={() => setIsAddOpen(true)}
-        className="fixed bottom-24 right-4 md:bottom-8 md:right-8 w-14 h-14 bg-[var(--color-accent)] text-white text-2xl font-sans shadow-lg hover:opacity-90 transition-opacity z-30 flex items-center justify-center"
+        className="fixed bottom-[88px] right-5 md:bottom-10 md:right-10 w-14 h-14 bg-[var(--color-accent)] text-white shadow-[0_4px_16px_rgba(193,68,14,0.3)] hover:bg-[var(--color-accent-hover)] hover:shadow-[0_6px_20px_rgba(193,68,14,0.35)] transition-all duration-200 z-30 flex items-center justify-center active:scale-95"
         aria-label="Add book"
       >
-        +
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+          <path d="M11 3v16M3 11h16" />
+        </svg>
       </button>
 
       <AddBookModal isOpen={isAddOpen} onClose={() => setIsAddOpen(false)} />

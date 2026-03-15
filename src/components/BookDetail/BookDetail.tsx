@@ -16,15 +16,23 @@ export function BookDetail({ book, onClose, onMarkAsRead, onRemove }: BookDetail
 
   useEffect(() => {
     if (book) {
-      requestAnimationFrame(() => setIsVisible(true))
+      // Prevent body scroll
+      document.body.style.overflow = 'hidden'
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => setIsVisible(true))
+      })
     } else {
+      document.body.style.overflow = ''
       setIsVisible(false)
+    }
+    return () => {
+      document.body.style.overflow = ''
     }
   }, [book])
 
   const handleClose = () => {
     setIsVisible(false)
-    setTimeout(onClose, 220)
+    setTimeout(onClose, 280)
   }
 
   if (!book) return null
@@ -33,66 +41,86 @@ export function BookDetail({ book, onClose, onMarkAsRead, onRemove }: BookDetail
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/30 z-50 transition-opacity duration-220"
+        className="fixed inset-0 bg-black/25 z-50 transition-opacity duration-300"
         style={{ opacity: isVisible ? 1 : 0 }}
         onClick={handleClose}
       />
 
       {/* Drawer */}
       <div
-        className={`fixed z-50 bg-[var(--color-surface)] overflow-y-auto
-          bottom-0 left-0 right-0 max-h-[85vh]
-          md:top-0 md:right-0 md:bottom-0 md:left-auto md:max-h-none md:w-[420px]
-          transition-transform duration-220
-          ${isVisible ? 'translate-y-0 md:translate-x-0' : 'translate-y-full md:translate-y-0 md:translate-x-full'}`}
-        style={{ transitionTimingFunction: 'cubic-bezier(0.4,0,0.2,1)' }}
+        className={`fixed z-50 bg-[var(--color-surface)] overflow-y-auto overscroll-contain
+          bottom-0 left-0 right-0 max-h-[90vh]
+          md:top-0 md:right-0 md:bottom-0 md:left-auto md:max-h-none md:w-[440px]
+          transition-transform duration-300 drawer-timing
+          ${isVisible
+            ? 'translate-y-0 md:translate-x-0'
+            : 'translate-y-full md:translate-y-0 md:translate-x-full'
+          }`}
       >
-        <div className="p-6">
+        {/* Mobile drag indicator */}
+        <div className="md:hidden flex justify-center pt-3 pb-1">
+          <div className="w-8 h-1 rounded-full bg-[var(--color-border-strong)]" />
+        </div>
+
+        <div className="px-6 md:px-8 pt-4 md:pt-8 pb-8 safe-bottom">
+          {/* Close */}
           <button
             onClick={handleClose}
-            className="mb-6 text-[var(--color-ink-secondary)] hover:text-[var(--color-ink)] transition-colors font-sans text-sm"
+            className="mb-8 p-1 -ml-1 text-[var(--color-ink-tertiary)] hover:text-[var(--color-ink)] transition-colors duration-200"
+            aria-label="Close"
           >
-            Close
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+              <path d="M15 5L5 15M5 5l10 10" />
+            </svg>
           </button>
 
+          {/* Cover */}
           {book.cover_url && (
-            <div className="aspect-[2/3] w-full max-w-[240px] mx-auto relative mb-6 bg-[var(--color-surface-raised)]">
+            <div className="aspect-[2/3] w-full max-w-[200px] mx-auto relative mb-8 shadow-[0_4px_20px_rgba(0,0,0,0.1),_0_1px_4px_rgba(0,0,0,0.06)]">
               <Image
                 src={book.cover_url}
-                alt={book.title}
+                alt=""
                 fill
-                sizes="240px"
+                sizes="200px"
                 className="object-cover"
+                priority
               />
             </div>
           )}
 
-          <h2 className="font-display text-2xl text-[var(--color-ink)] mb-1">{book.title}</h2>
-          <p className="font-sans text-sm text-[var(--color-ink-secondary)] mb-4">{book.author}</p>
+          {/* Title & Author */}
+          <h2 className="font-display text-[24px] md:text-[28px] text-[var(--color-ink)] leading-[1.2] tracking-[-0.01em]">
+            {book.title}
+          </h2>
+          <p className="font-sans text-[15px] text-[var(--color-ink-secondary)] mt-1.5 mb-6">
+            {book.author}
+          </p>
 
-          <div className="flex gap-3 flex-wrap mb-6">
+          {/* Meta tags */}
+          <div className="flex gap-2 flex-wrap mb-8">
             {book.genre && (
-              <span className="font-mono text-xs px-2 py-1 border border-[var(--color-border)] text-[var(--color-ink-secondary)]">
+              <span className="font-mono text-[10px] tracking-[0.06em] uppercase px-2.5 py-1.5 bg-[var(--color-accent-light)] text-[var(--color-accent)]">
                 {book.genre}
               </span>
             )}
             {book.year && (
-              <span className="font-mono text-xs px-2 py-1 border border-[var(--color-border)] text-[var(--color-ink-secondary)]">
+              <span className="font-mono text-[10px] tracking-[0.04em] px-2.5 py-1.5 bg-[var(--color-surface-raised)] text-[var(--color-ink-secondary)]">
                 {book.year}
               </span>
             )}
-            <span className="font-mono text-xs px-2 py-1 border border-[var(--color-border)] text-[var(--color-ink-tertiary)]">
-              {book.capture_method}
-            </span>
           </div>
 
+          {/* Description */}
           {book.description && (
-            <p className="font-sans text-sm text-[var(--color-ink-secondary)] leading-relaxed mb-6">
-              {book.description}
-            </p>
+            <div className="mb-8">
+              <p className="font-sans text-[13px] text-[var(--color-ink-secondary)] leading-[1.7]">
+                {book.description}
+              </p>
+            </div>
           )}
 
-          <p className="font-mono text-xs text-[var(--color-ink-tertiary)] mb-8">
+          {/* Date */}
+          <p className="font-mono text-[10px] tracking-[0.04em] text-[var(--color-ink-tertiary)] uppercase mb-10">
             Added {new Date(book.date_added).toLocaleDateString('en-US', {
               year: 'numeric',
               month: 'long',
@@ -100,17 +128,18 @@ export function BookDetail({ book, onClose, onMarkAsRead, onRemove }: BookDetail
             })}
           </p>
 
+          {/* Actions */}
           {book.status === 'to_read' && (
             <div className="flex gap-3">
               <button
                 onClick={() => onMarkAsRead(book.id)}
-                className="flex-1 py-3 text-sm font-sans bg-[var(--color-ink)] text-[var(--color-bg)] hover:opacity-90 transition-opacity"
+                className="flex-1 py-3.5 text-[13px] font-sans tracking-[0.01em] bg-[var(--color-ink)] text-[var(--color-bg)] hover:bg-[var(--color-ink)]/90 transition-colors duration-200"
               >
                 Mark as Read
               </button>
               <button
                 onClick={() => onRemove(book.id)}
-                className="px-4 py-3 text-sm font-sans border border-[var(--color-border)] text-[var(--color-ink-secondary)] hover:border-[var(--color-border-strong)] transition-colors"
+                className="px-5 py-3.5 text-[13px] font-sans tracking-[0.01em] border border-[var(--color-border)] text-[var(--color-ink-secondary)] hover:border-[var(--color-border-strong)] hover:text-[var(--color-ink)] transition-all duration-200"
               >
                 Remove
               </button>

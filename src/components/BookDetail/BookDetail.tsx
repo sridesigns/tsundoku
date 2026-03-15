@@ -76,10 +76,10 @@ export function BookDetail({ book, onClose, onMarkAsRead, onRemove }: BookDetail
 
           {/* Cover */}
           {book.cover_url && (
-            <div className="aspect-[2/3] w-full max-w-[200px] mx-auto relative mb-8 rounded-lg overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.1),_0_1px_4px_rgba(0,0,0,0.06)]">
+            <div className="aspect-[2/3] w-full max-w-[200px] mx-auto relative mb-8 rounded-lg overflow-hidden shadow-[var(--shadow-lg)]">
               <Image
                 src={book.cover_url}
-                alt=""
+                alt={`Cover of ${book.title} by ${book.author}`}
                 fill
                 sizes="200px"
                 className="object-cover"

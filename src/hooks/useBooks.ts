@@ -5,11 +5,11 @@ import { useBookStore } from '@/src/store/books'
 
 export function useBooks() {
   const store = useBookStore()
+  const hydrate = useBookStore((s) => s.hydrate)
 
   useEffect(() => {
-    store.hydrate()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    hydrate()
+  }, [hydrate])
 
   return store
 }

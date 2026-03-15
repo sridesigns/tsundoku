@@ -44,8 +44,18 @@ export default function SettingsPage() {
         const text = await file.text()
         const data = JSON.parse(text)
         if (!Array.isArray(data)) throw new Error('Invalid format')
-        await importBooks(data)
-        showToast(`Imported ${data.length} books`)
+        const valid = data.filter(
+          (b: Record<string, unknown>) =>
+            typeof b.id === 'string' &&
+            typeof b.title === 'string' &&
+            typeof b.author === 'string' &&
+            typeof b.status === 'string' &&
+            typeof b.date_added === 'number'
+        )
+        if (valid.length === 0) throw new Error('No valid books found')
+        await importBooks(valid)
+        const skipped = data.length - valid.length
+        showToast(`Imported ${valid.length} books${skipped > 0 ? ` (${skipped} skipped)` : ''}`)
       } catch {
         showToast('Import failed — invalid file format')
       }

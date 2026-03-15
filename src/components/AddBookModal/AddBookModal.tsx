@@ -136,8 +136,8 @@ export function AddBookModal({ isOpen, onClose }: AddBookModalProps) {
         const data: { genre: Genre } = await res.json()
         await updateBook(bookId, { genre: data.genre })
       }
-    } catch {
-      // Non-critical
+    } catch (err) {
+      console.warn('Genre categorization failed:', err)
     }
   }
 

@@ -49,11 +49,11 @@ export function SearchResults({ results, isSearching, isAdding, onSelect }: Sear
               style={{ animationDelay: `${i * 60}ms` }}
             >
               {/* Cover */}
-              <div className="w-12 h-[68px] bg-[var(--color-surface-raised)] shrink-0 overflow-hidden relative rounded shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+              <div className="w-12 h-[68px] bg-[var(--color-surface-raised)] shrink-0 overflow-hidden relative rounded shadow-[var(--shadow-sm)]">
                 {coverUrl ? (
                   <Image
                     src={coverUrl}
-                    alt=""
+                    alt={`Cover of ${result.title}`}
                     fill
                     sizes="48px"
                     className="object-cover"

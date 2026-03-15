@@ -14,7 +14,7 @@ type SortOption = 'date_added' | 'title' | 'author'
 type ViewMode = 'grid' | 'list'
 
 export default function CollectionPage() {
-  const { books, isLoading, markAsRead, removeBook } = useBooks()
+  const { books, isLoading, hydrationError, markAsRead, removeBook } = useBooks()
   const { showToast } = useToast()
   const [isAddOpen, setIsAddOpen] = useState(false)
   const [selectedBook, setSelectedBook] = useState<Book | null>(null)
@@ -78,6 +78,21 @@ export default function CollectionPage() {
             <BookCardSkeleton key={i} viewMode="grid" />
           ))}
         </div>
+      </div>
+    )
+  }
+
+  // Hydration error state
+  if (hydrationError) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 text-center">
+        <p className="font-sans text-[14px] text-[var(--color-accent)] mb-4">{hydrationError}</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="px-5 py-2.5 text-[13px] font-sans border border-[var(--color-border)] rounded-lg text-[var(--color-ink-secondary)] hover:border-[var(--color-ink-tertiary)] hover:text-[var(--color-ink)] transition-all duration-200"
+        >
+          Refresh page
+        </button>
       </div>
     )
   }

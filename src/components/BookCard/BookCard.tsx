@@ -21,11 +21,11 @@ export function BookCard({ book, index, viewMode, onClick }: BookCardProps) {
         style={{ animationDelay: `${delay}ms` }}
       >
         {/* Cover thumbnail */}
-        <div className="w-11 h-[62px] bg-[var(--color-surface-raised)] shrink-0 overflow-hidden relative rounded shadow-[0_1px_4px_rgba(0,0,0,0.08)]">
+        <div className="w-11 h-[62px] bg-[var(--color-surface-raised)] shrink-0 overflow-hidden relative rounded shadow-[var(--shadow-sm)]">
           {book.cover_url ? (
             <Image
               src={book.cover_url}
-              alt=""
+              alt={`Cover of ${book.title} by ${book.author}`}
               fill
               sizes="44px"
               className="object-cover"
@@ -73,11 +73,11 @@ export function BookCard({ book, index, viewMode, onClick }: BookCardProps) {
       style={{ animationDelay: `${delay}ms` }}
     >
       {/* Cover */}
-      <div className="aspect-[2/3] bg-[var(--color-surface-raised)] overflow-hidden relative mb-3 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.06),_0_1px_2px_rgba(0,0,0,0.04)]">
+      <div className="aspect-[2/3] bg-[var(--color-surface-raised)] overflow-hidden relative mb-3 rounded-lg shadow-[var(--shadow-md)]">
         {book.cover_url ? (
           <Image
             src={book.cover_url}
-            alt=""
+            alt={`Cover of ${book.title} by ${book.author}`}
             fill
             sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 22vw"
             className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
@@ -96,7 +96,7 @@ export function BookCard({ book, index, viewMode, onClick }: BookCardProps) {
         )}
 
         {/* Genre badge — subtle overlay */}
-        {book.genre && !book.genre.startsWith('Categoris') && (
+        {book.genre && book.genre !== 'Other' && (
           <div className="absolute bottom-0 left-0 right-0 px-2.5 py-2 bg-gradient-to-t from-black/50 to-transparent">
             <span className="font-mono text-[9px] tracking-[0.06em] text-white/90 uppercase">
               {book.genre}

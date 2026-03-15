@@ -7,6 +7,7 @@ import { StorageManager } from '@/src/lib/storage/StorageManager'
 interface BooksState {
   books: Book[]
   isLoading: boolean
+  hydrationError: string | null
   hydrate: () => Promise<void>
   addBook: (book: Omit<Book, 'id' | 'date_added' | 'date_updated'>) => Promise<Book>
   updateBook: (id: string, patch: Partial<Book>) => Promise<void>
@@ -20,15 +21,16 @@ interface BooksState {
 export const useBookStore = create<BooksState>((set, get) => ({
   books: [],
   isLoading: true,
+  hydrationError: null,
 
   hydrate: async () => {
     try {
       const adapter = StorageManager.getAdapter()
       const books = await adapter.getAll()
-      set({ books, isLoading: false })
+      set({ books, isLoading: false, hydrationError: null })
     } catch (err) {
       console.error('Failed to hydrate books:', err)
-      set({ isLoading: false })
+      set({ isLoading: false, hydrationError: 'Failed to load your books. Please refresh the page.' })
     }
   },
 

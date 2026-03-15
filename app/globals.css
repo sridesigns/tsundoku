@@ -141,6 +141,16 @@ button:focus:not(:focus-visible) {
   transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
+/* --- Modal content padding --- */
+.modal-content-padding {
+  padding: 16px 20px 32px;
+}
+@media (min-width: 768px) {
+  .modal-content-padding {
+    padding: 32px;
+  }
+}
+
 /* --- Safe area for mobile --- */
 .safe-bottom {
   padding-bottom: max(env(safe-area-inset-bottom, 0px), 0px);

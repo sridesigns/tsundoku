@@ -64,7 +64,7 @@ export function DesktopNav() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3.5 px-4 py-2.5 text-[13px] font-sans tracking-[0.01em] transition-all duration-200 ${
+              className={`flex items-center gap-3.5 px-4 py-2.5 rounded-lg text-[13px] font-sans tracking-[0.01em] transition-all duration-200 ${
                 active
                   ? 'text-[var(--color-ink)] bg-[var(--color-surface-raised)] font-medium'
                   : 'text-[var(--color-ink-secondary)] hover:text-[var(--color-ink)] hover:bg-[var(--color-surface-raised)]'

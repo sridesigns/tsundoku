@@ -20,7 +20,7 @@ export function EmptyState({ onAdd }: { onAdd: () => void }) {
 
       <button
         onClick={onAdd}
-        className="group relative w-14 h-14 flex items-center justify-center bg-[var(--color-accent)] text-white hover:bg-[var(--color-accent-hover)] transition-colors duration-200"
+        className="group relative w-14 h-14 rounded-2xl flex items-center justify-center bg-[var(--color-accent)] text-white hover:bg-[var(--color-accent-hover)] transition-colors duration-200"
         aria-label="Add your first book"
       >
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">

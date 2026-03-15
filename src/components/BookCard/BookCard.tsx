@@ -21,7 +21,7 @@ export function BookCard({ book, index, viewMode, onClick }: BookCardProps) {
         style={{ animationDelay: `${delay}ms` }}
       >
         {/* Cover thumbnail */}
-        <div className="w-11 h-[62px] bg-[var(--color-surface-raised)] shrink-0 overflow-hidden relative shadow-[0_1px_4px_rgba(0,0,0,0.08)]">
+        <div className="w-11 h-[62px] bg-[var(--color-surface-raised)] shrink-0 overflow-hidden relative rounded shadow-[0_1px_4px_rgba(0,0,0,0.08)]">
           {book.cover_url ? (
             <Image
               src={book.cover_url}
@@ -73,7 +73,7 @@ export function BookCard({ book, index, viewMode, onClick }: BookCardProps) {
       style={{ animationDelay: `${delay}ms` }}
     >
       {/* Cover */}
-      <div className="aspect-[2/3] bg-[var(--color-surface-raised)] overflow-hidden relative mb-3 shadow-[0_2px_8px_rgba(0,0,0,0.06),_0_1px_2px_rgba(0,0,0,0.04)]">
+      <div className="aspect-[2/3] bg-[var(--color-surface-raised)] overflow-hidden relative mb-3 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.06),_0_1px_2px_rgba(0,0,0,0.04)]">
         {book.cover_url ? (
           <Image
             src={book.cover_url}
@@ -131,9 +131,9 @@ export function BookCardSkeleton({ viewMode }: { viewMode: 'grid' | 'list' }) {
 
   return (
     <div>
-      <div className="aspect-[2/3] skeleton mb-3" />
-      <div className="h-3 skeleton w-[75%] mb-1.5" />
-      <div className="h-2.5 skeleton w-[50%]" />
+      <div className="aspect-[2/3] skeleton rounded-lg mb-3" />
+      <div className="h-3 skeleton rounded w-[75%] mb-1.5" />
+      <div className="h-2.5 skeleton rounded w-[50%]" />
     </div>
   )
 }

@@ -35,7 +35,7 @@ function ToastItem({ toast, onDismiss }: { toast: ToastData; onDismiss: (id: str
 
   return (
     <div
-      className="font-sans text-[13px] tracking-[0.01em] px-5 py-3.5 bg-[var(--color-ink)] text-[var(--color-bg)] shadow-[0_8px_32px_rgba(0,0,0,0.12)] transition-all duration-300"
+      className="font-sans text-[13px] tracking-[0.01em] px-5 py-3.5 rounded-xl bg-[var(--color-ink)] text-[var(--color-bg)] shadow-[0_8px_32px_rgba(0,0,0,0.12)] transition-all duration-300"
       style={{
         opacity: visible ? 1 : 0,
         transform: visible ? 'translateY(0) scale(1)' : 'translateY(8px) scale(0.98)',

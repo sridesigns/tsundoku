@@ -62,7 +62,7 @@ export function CameraCapture({ isProcessing, error, onCapture }: CameraCaptureP
   return (
     <div className="flex flex-col items-center">
       {/* Viewfinder */}
-      <div className="w-full max-w-[300px] aspect-[3/4] bg-[var(--color-ink)] overflow-hidden relative">
+      <div className="w-full max-w-[300px] aspect-[3/4] bg-[var(--color-ink)] overflow-hidden relative rounded-xl">
         <Webcam
           ref={webcamRef as React.RefObject<never>}
           screenshotFormat="image/png"
@@ -114,7 +114,7 @@ export function CameraCapture({ isProcessing, error, onCapture }: CameraCaptureP
         <button
           onClick={handleCapture}
           disabled={!cameraReady}
-          className="px-8 py-3 text-[13px] font-sans tracking-[0.01em] bg-[var(--color-ink)] text-[var(--color-bg)] hover:opacity-90 transition-all duration-200 disabled:opacity-30"
+          className="px-8 py-3 text-[13px] font-sans tracking-[0.01em] bg-[var(--color-ink)] text-[var(--color-bg)] rounded-lg hover:opacity-90 transition-all duration-200 disabled:opacity-30"
         >
           Capture
         </button>

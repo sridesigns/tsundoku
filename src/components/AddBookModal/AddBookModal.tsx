@@ -166,7 +166,7 @@ export function AddBookModal({ isOpen, onClose }: AddBookModalProps) {
 
       {/* Bottom sheet */}
       <div
-        className={`fixed bottom-0 left-0 right-0 z-50 bg-[var(--color-surface)] max-h-[92vh] overflow-y-auto overscroll-contain transition-transform duration-300 drawer-timing safe-bottom
+        className={`fixed bottom-0 left-0 right-0 z-50 bg-[var(--color-surface)] rounded-t-2xl max-h-[92vh] overflow-y-auto overscroll-contain transition-transform duration-300 drawer-timing safe-bottom shadow-[0_-4px_40px_rgba(0,0,0,0.08)]
           ${isVisible ? 'translate-y-0' : 'translate-y-full'}`}
       >
         {/* Drag indicator */}
@@ -192,16 +192,16 @@ export function AddBookModal({ isOpen, onClose }: AddBookModalProps) {
           </div>
 
           {/* Tabs */}
-          <div className="flex gap-1 mb-6 bg-[var(--color-surface-raised)] p-1">
+          <div className="flex gap-1 mb-6 bg-[var(--color-surface-raised)] p-1 rounded-lg">
             {tabs.map((t) => {
               const active = tab === t.key
               return (
                 <button
                   key={t.key}
                   onClick={() => setTab(t.key)}
-                  className={`flex-1 flex items-center justify-center gap-2 py-2.5 text-[12px] font-sans tracking-[0.02em] transition-all duration-200 ${
+                  className={`flex-1 flex items-center justify-center gap-2 py-2.5 text-[12px] font-sans tracking-[0.02em] rounded-md transition-all duration-200 ${
                     active
-                      ? 'bg-[var(--color-surface)] text-[var(--color-ink)] shadow-[0_1px_3px_rgba(0,0,0,0.06)]'
+                      ? 'bg-[var(--color-surface)] text-[var(--color-ink)] shadow-[0_1px_3px_rgba(0,0,0,0.08)]'
                       : 'text-[var(--color-ink-tertiary)] hover:text-[var(--color-ink-secondary)]'
                   }`}
                 >

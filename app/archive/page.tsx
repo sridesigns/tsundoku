@@ -21,7 +21,7 @@ function ArchiveItem({
       style={{ animationDelay: `${Math.min(index * 50, 300)}ms` }}
     >
       {/* Cover */}
-      <div className="w-11 h-[62px] bg-[var(--color-surface-raised)] shrink-0 overflow-hidden relative shadow-[0_1px_4px_rgba(0,0,0,0.06)]">
+      <div className="w-11 h-[62px] bg-[var(--color-surface-raised)] shrink-0 overflow-hidden relative rounded shadow-[0_1px_4px_rgba(0,0,0,0.06)]">
         {book.cover_url ? (
           <Image
             src={book.cover_url}
@@ -53,7 +53,7 @@ function ArchiveItem({
       {/* Restore */}
       <button
         onClick={() => onRestore(book.id)}
-        className="shrink-0 px-3.5 py-2 text-[11px] font-mono tracking-[0.04em] uppercase border border-[var(--color-border)] text-[var(--color-ink-secondary)] hover:border-[var(--color-ink-tertiary)] hover:text-[var(--color-ink)] transition-all duration-200"
+        className="shrink-0 px-3.5 py-2 text-[11px] font-mono tracking-[0.04em] uppercase rounded-lg border border-[var(--color-border)] text-[var(--color-ink-secondary)] hover:border-[var(--color-ink-tertiary)] hover:text-[var(--color-ink)] transition-all duration-200"
       >
         Restore
       </button>

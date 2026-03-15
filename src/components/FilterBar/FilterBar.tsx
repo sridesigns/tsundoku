@@ -33,7 +33,7 @@ export function FilterBar({
         <div className="flex gap-2 overflow-x-auto pb-0.5 scrollbar-hide -mx-1 px-1">
           <button
             onClick={() => onGenreChange(null)}
-            className={`shrink-0 px-3.5 py-[7px] text-[11px] font-mono tracking-[0.04em] uppercase transition-all duration-200 ${
+            className={`shrink-0 px-3.5 py-[7px] text-[11px] font-mono tracking-[0.04em] uppercase rounded-full transition-all duration-200 ${
               activeGenre === null
                 ? 'bg-[var(--color-ink)] text-[var(--color-bg)]'
                 : 'text-[var(--color-ink-secondary)] border border-[var(--color-border)] hover:border-[var(--color-ink-tertiary)]'
@@ -45,7 +45,7 @@ export function FilterBar({
             <button
               key={genre}
               onClick={() => onGenreChange(genre)}
-              className={`shrink-0 px-3.5 py-[7px] text-[11px] font-mono tracking-[0.04em] uppercase transition-all duration-200 ${
+              className={`shrink-0 px-3.5 py-[7px] text-[11px] font-mono tracking-[0.04em] uppercase rounded-full transition-all duration-200 ${
                 activeGenre === genre
                   ? 'bg-[var(--color-ink)] text-[var(--color-bg)]'
                   : 'text-[var(--color-ink-secondary)] border border-[var(--color-border)] hover:border-[var(--color-ink-tertiary)]'

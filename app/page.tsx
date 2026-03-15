@@ -74,7 +74,7 @@ export default function CollectionPage() {
           </h1>
         </header>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-          {Array.from({ length: 8 }).map((_, i) => (
+          {Array.from({ length: 6 }).map((_, i) => (
             <BookCardSkeleton key={i} viewMode="grid" />
           ))}
         </div>
@@ -143,7 +143,7 @@ export default function CollectionPage() {
       {/* FAB */}
       <button
         onClick={() => setIsAddOpen(true)}
-        className="fixed bottom-[88px] right-5 md:bottom-10 md:right-10 w-14 h-14 bg-[var(--color-accent)] text-white shadow-[0_4px_16px_rgba(193,68,14,0.3)] hover:bg-[var(--color-accent-hover)] hover:shadow-[0_6px_20px_rgba(193,68,14,0.35)] transition-all duration-200 z-30 flex items-center justify-center active:scale-95"
+        className="fixed bottom-[88px] right-5 md:bottom-10 md:right-10 w-14 h-14 rounded-2xl bg-[var(--color-accent)] text-white shadow-[0_4px_16px_rgba(193,68,14,0.3)] hover:bg-[var(--color-accent-hover)] hover:shadow-[0_6px_20px_rgba(193,68,14,0.35)] transition-all duration-200 z-30 flex items-center justify-center active:scale-95"
         aria-label="Add book"
       >
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">

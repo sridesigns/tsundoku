@@ -85,11 +85,11 @@ export default function SettingsPage() {
             value={apiKey}
             onChange={(e) => setApiKey(e.target.value)}
             placeholder="sk-ant-..."
-            className="flex-1 px-4 py-3 text-[13px] font-mono bg-[var(--color-surface)] text-[var(--color-ink)] border border-[var(--color-border)] outline-none focus:border-[var(--color-ink-tertiary)] transition-colors duration-200"
+            className="flex-1 px-4 py-3 text-[13px] font-mono bg-[var(--color-surface)] text-[var(--color-ink)] border border-[var(--color-border)] rounded-lg outline-none focus:border-[var(--color-ink-tertiary)] transition-colors duration-200"
           />
           <button
             onClick={handleSaveKey}
-            className="px-5 py-3 text-[13px] font-sans tracking-[0.01em] bg-[var(--color-ink)] text-[var(--color-bg)] hover:opacity-90 transition-all duration-200"
+            className="px-5 py-3 text-[13px] font-sans tracking-[0.01em] bg-[var(--color-ink)] text-[var(--color-bg)] rounded-lg hover:opacity-90 transition-all duration-200"
           >
             Save
           </button>
@@ -105,21 +105,21 @@ export default function SettingsPage() {
           <div className="flex-1 h-px bg-[var(--color-border)]" />
         </div>
         <div className="space-y-2 max-w-md">
-          <div className="flex items-center justify-between px-4 py-3 border border-[var(--color-border)] bg-[var(--color-surface)]">
+          <div className="flex items-center justify-between px-4 py-3 border border-[var(--color-border)] bg-[var(--color-surface)] rounded-lg">
             <div>
               <span className="font-sans text-[14px] text-[var(--color-ink)]">IndexedDB</span>
               <p className="font-sans text-[11px] text-[var(--color-ink-tertiary)] mt-0.5">Local browser storage</p>
             </div>
             <span className="font-mono text-[10px] tracking-[0.04em] uppercase text-[var(--color-success)]">Active</span>
           </div>
-          <div className="flex items-center justify-between px-4 py-3 border border-[var(--color-border)] opacity-40">
+          <div className="flex items-center justify-between px-4 py-3 border border-[var(--color-border)] rounded-lg opacity-40">
             <div>
               <span className="font-sans text-[14px] text-[var(--color-ink)]">Notion</span>
               <p className="font-sans text-[11px] text-[var(--color-ink-tertiary)] mt-0.5">Sync with Notion database</p>
             </div>
             <span className="font-mono text-[10px] tracking-[0.04em] uppercase text-[var(--color-ink-tertiary)]">Soon</span>
           </div>
-          <div className="flex items-center justify-between px-4 py-3 border border-[var(--color-border)] opacity-40">
+          <div className="flex items-center justify-between px-4 py-3 border border-[var(--color-border)] rounded-lg opacity-40">
             <div>
               <span className="font-sans text-[14px] text-[var(--color-ink)]">Google Drive</span>
               <p className="font-sans text-[11px] text-[var(--color-ink-tertiary)] mt-0.5">Sync across devices</p>
@@ -140,20 +140,20 @@ export default function SettingsPage() {
         <div className="flex flex-wrap gap-2">
           <button
             onClick={handleExport}
-            className="px-4 py-2.5 text-[12px] font-sans tracking-[0.01em] border border-[var(--color-border)] text-[var(--color-ink-secondary)] hover:border-[var(--color-ink-tertiary)] hover:text-[var(--color-ink)] transition-all duration-200"
+            className="px-4 py-2.5 text-[12px] font-sans tracking-[0.01em] border border-[var(--color-border)] rounded-lg text-[var(--color-ink-secondary)] hover:border-[var(--color-ink-tertiary)] hover:text-[var(--color-ink)] transition-all duration-200"
           >
             Export JSON
           </button>
           <button
             onClick={handleImport}
-            className="px-4 py-2.5 text-[12px] font-sans tracking-[0.01em] border border-[var(--color-border)] text-[var(--color-ink-secondary)] hover:border-[var(--color-ink-tertiary)] hover:text-[var(--color-ink)] transition-all duration-200"
+            className="px-4 py-2.5 text-[12px] font-sans tracking-[0.01em] border border-[var(--color-border)] rounded-lg text-[var(--color-ink-secondary)] hover:border-[var(--color-ink-tertiary)] hover:text-[var(--color-ink)] transition-all duration-200"
           >
             Import JSON
           </button>
           {!showClearConfirm ? (
             <button
               onClick={() => setShowClearConfirm(true)}
-              className="px-4 py-2.5 text-[12px] font-sans tracking-[0.01em] border border-[var(--color-border)] text-[var(--color-accent)] hover:border-[var(--color-accent)] transition-all duration-200"
+              className="px-4 py-2.5 text-[12px] font-sans tracking-[0.01em] border border-[var(--color-border)] rounded-lg text-[var(--color-accent)] hover:border-[var(--color-accent)] transition-all duration-200"
             >
               Clear All Data
             </button>
@@ -161,13 +161,13 @@ export default function SettingsPage() {
             <div className="flex gap-2 animate-fadeIn">
               <button
                 onClick={handleClear}
-                className="px-4 py-2.5 text-[12px] font-sans tracking-[0.01em] bg-[var(--color-accent)] text-white hover:bg-[var(--color-accent-hover)] transition-colors duration-200"
+                className="px-4 py-2.5 text-[12px] font-sans tracking-[0.01em] bg-[var(--color-accent)] text-white rounded-lg hover:bg-[var(--color-accent-hover)] transition-colors duration-200"
               >
                 Yes, clear everything
               </button>
               <button
                 onClick={() => setShowClearConfirm(false)}
-                className="px-4 py-2.5 text-[12px] font-sans tracking-[0.01em] border border-[var(--color-border)] text-[var(--color-ink-secondary)]"
+                className="px-4 py-2.5 text-[12px] font-sans tracking-[0.01em] border border-[var(--color-border)] rounded-lg text-[var(--color-ink-secondary)]"
               >
                 Cancel
               </button>

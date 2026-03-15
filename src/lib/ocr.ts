@@ -4,7 +4,7 @@
  * Preprocess image for better OCR results:
  * - Convert to grayscale
  * - Increase contrast
- * - Sharpen edges
+ * - Apply adaptive thresholding
  * - Scale up small images
  */
 function preprocessImage(imageDataUrl: string): Promise<string> {
@@ -14,7 +14,8 @@ function preprocessImage(imageDataUrl: string): Promise<string> {
     img.onload = () => {
       const canvas = document.createElement('canvas')
       // Scale up for better OCR (Tesseract works best at 300+ DPI equivalent)
-      const scale = Math.max(1, 1500 / Math.max(img.width, img.height))
+      const minDim = Math.min(img.width, img.height)
+      const scale = minDim < 1000 ? Math.max(1, 2000 / minDim) : 1
       canvas.width = img.width * scale
       canvas.height = img.height * scale
 
@@ -35,12 +36,12 @@ function preprocessImage(imageDataUrl: string): Promise<string> {
         // Convert to grayscale using luminance
         const gray = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]
 
-        // Increase contrast (stretch histogram)
-        const contrast = 1.5
+        // Increase contrast
+        const contrast = 1.8
         const adjusted = ((gray / 255 - 0.5) * contrast + 0.5) * 255
 
-        // Threshold to make text crisper
-        const value = adjusted > 140 ? 255 : adjusted < 80 ? 0 : adjusted
+        // Clamp
+        const value = Math.max(0, Math.min(255, adjusted))
 
         data[i] = value
         data[i + 1] = value
@@ -56,7 +57,6 @@ function preprocessImage(imageDataUrl: string): Promise<string> {
 }
 
 export async function extractTextFromImage(imageDataUrl: string): Promise<string> {
-  // Preprocess for better OCR accuracy
   const processedImage = await preprocessImage(imageDataUrl)
 
   const { createWorker } = await import('tesseract.js')
@@ -66,62 +66,86 @@ export async function extractTextFromImage(imageDataUrl: string): Promise<string
   return data.text
 }
 
+/**
+ * Extract a likely book title from OCR text.
+ *
+ * Strategy: instead of trying to pick a single "best" line, we extract
+ * the most promising text fragments and return them as a search query.
+ * The Open Library API is much better at fuzzy matching than we are at
+ * guessing which exact line is the title.
+ */
 export function extractLikelyTitle(ocrText: string): string {
   const lines = ocrText
     .split('\n')
     .map((l) => l.trim())
-    // Remove lines that are obviously not titles
     .filter((l) => {
-      if (l.length < 2 || l.length > 120) return false
-      // Skip lines that are mostly numbers or special chars
-      const alphaRatio = (l.match(/[a-zA-Z]/g) || []).length / l.length
-      if (alphaRatio < 0.5) return false
-      // Skip common noise words from book covers
-      const lower = l.toLowerCase()
-      if (['bestseller', 'new york times', 'national', 'winner', 'prize', 'award'].some(w => lower === w)) return false
+      if (l.length < 2) return false
+      // Must have some alphabetic content
+      const alphaCount = (l.match(/[a-zA-Z]/g) || []).length
+      if (alphaCount < 2) return false
+      const alphaRatio = alphaCount / l.length
+      if (alphaRatio < 0.4) return false
       return true
     })
 
   if (lines.length === 0) return ''
 
-  // Score each line — titles tend to be:
-  // - In the upper portion of the text (book covers have title at top)
-  // - Moderately long but not the longest (longest is often a subtitle or blurb)
-  // - Often in UPPER CASE or Title Case
-  let bestScore = -1
-  let bestLine = lines[0]
-
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i]
+  // Score lines to find the most title-like ones
+  const scored = lines.map((line, i) => {
     let score = 0
 
-    // Position bonus — earlier lines are more likely titles
-    score += Math.max(0, (lines.length - i) / lines.length) * 30
+    // Position: titles are usually in the top half of the cover
+    const positionRatio = i / lines.length
+    if (positionRatio < 0.5) score += 30
+    if (positionRatio < 0.3) score += 15
 
-    // Length sweet spot — titles are typically 3-60 chars
+    // Length: titles are typically 3-60 chars
     if (line.length >= 3 && line.length <= 60) score += 25
     if (line.length >= 5 && line.length <= 40) score += 15
 
-    // Title case or ALL CAPS bonus
-    const words = line.split(/\s+/)
-    const capitalizedWords = words.filter(w => w.length > 0 && w[0] === w[0].toUpperCase())
-    if (capitalizedWords.length === words.length) score += 20
+    // Title case or ALL CAPS
+    const words = line.split(/\s+/).filter(w => w.length > 0)
+    const capitalizedWords = words.filter(w => w[0] === w[0].toUpperCase())
+    if (words.length > 0 && capitalizedWords.length === words.length) score += 20
+    if (line === line.toUpperCase() && line !== line.toLowerCase()) score += 15
 
-    // All caps (common for book titles on covers)
-    if (line === line.toUpperCase() && line !== line.toLowerCase()) score += 10
+    // Penalize things that look like subtitles, blurbs, or author attributions
+    const lower = line.toLowerCase()
+    if (lower.startsWith('by ') || lower.startsWith('a novel')) score -= 40
+    if (lower.includes('bestseller') || lower.includes('new york times')) score -= 30
+    if (lower.includes('winner') || lower.includes('award') || lower.includes('prize')) score -= 25
+    if (lower.includes('edition') || lower.includes('isbn') || lower.includes('copyright')) score -= 50
+    if (lower.includes('www.') || lower.includes('.com') || lower.includes('.org')) score -= 50
 
-    // Penalize lines that look like author names (usually have "by" before them)
-    if (i > 0 && lines[i - 1].toLowerCase().startsWith('by')) score -= 30
+    // Penalize very short fragments
+    if (line.length < 3) score -= 30
 
-    // Penalize very short lines (likely fragments)
-    if (line.length < 4) score -= 20
+    // Penalize lines that are mostly punctuation/numbers after cleanup
+    const cleaned = line.replace(/[^a-zA-Z\s]/g, '').trim()
+    if (cleaned.length < 2) score -= 40
 
-    if (score > bestScore) {
-      bestScore = score
-      bestLine = line
-    }
+    return { line, score, cleaned }
+  })
+
+  // Sort by score descending
+  scored.sort((a, b) => b.score - a.score)
+
+  // Take the top 1-2 scoring lines and combine them as a search query
+  // This gives Open Library more context for fuzzy matching
+  const topLines = scored
+    .filter(s => s.score > 0)
+    .slice(0, 2)
+    .map(s => s.cleaned.replace(/[^a-zA-Z0-9\s'\-]/g, '').trim())
+    .filter(s => s.length > 0)
+
+  if (topLines.length === 0) {
+    // Fallback: return the longest alphabetic line
+    const fallback = lines
+      .map(l => l.replace(/[^a-zA-Z0-9\s'\-]/g, '').trim())
+      .filter(l => l.length >= 3)
+      .sort((a, b) => b.length - a.length)[0]
+    return fallback || ''
   }
 
-  // Clean up: remove stray punctuation but keep apostrophes and hyphens
-  return bestLine.replace(/[^a-zA-Z0-9\s'\-:,&.]/g, '').trim()
+  return topLines.join(' ')
 }

@@ -13,13 +13,13 @@ interface SearchResultsProps {
 export function SearchResults({ results, isSearching, isAdding, onSelect }: SearchResultsProps) {
   if (isSearching && results.length === 0) {
     return (
-      <div className="mt-6 space-y-0">
+      <div className="mt-5 space-y-0">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="flex items-center gap-4 py-4 border-b border-[var(--color-border)]">
-            <div className="w-11 h-[62px] skeleton shrink-0 rounded-lg" />
-            <div className="flex-1 space-y-2.5">
-              <div className="h-3.5 skeleton w-[70%] rounded" />
-              <div className="h-3 skeleton w-[45%] rounded" />
+          <div key={i} className="flex items-center gap-4 py-4 border-b border-wire">
+            <div className="w-11 h-[62px] skeleton shrink-0" />
+            <div className="flex-1 space-y-2">
+              <div className="h-3.5 skeleton w-[68%]" />
+              <div className="h-3 skeleton w-[44%]" />
             </div>
           </div>
         ))}
@@ -30,10 +30,8 @@ export function SearchResults({ results, isSearching, isAdding, onSelect }: Sear
   if (results.length === 0) return null
 
   return (
-    <div className="mt-6">
-      <p className="font-mono text-[10px] tracking-[0.08em] text-[var(--color-ink-tertiary)] uppercase mb-3">
-        Results
-      </p>
+    <div className="mt-5">
+      <p className="font-mono text-[10px] tracking-[0.08em] text-ink-3 uppercase mb-2">Results</p>
       <div>
         {results.map((result, i) => {
           const coverUrl = result.cover_id
@@ -45,46 +43,32 @@ export function SearchResults({ results, isSearching, isAdding, onSelect }: Sear
               key={result.open_library_key}
               onClick={() => onSelect(result)}
               disabled={isAdding}
-              className="w-full flex items-center gap-4 py-4 text-left border-b border-[var(--color-border)] last:border-b-0 hover:bg-[rgba(255,255,255,0.02)] transition-all duration-300 disabled:opacity-40 group animate-fadeInUp"
-              style={{ animationDelay: `${i * 60}ms` }}
+              className="w-full flex items-center gap-4 py-3.5 text-left border-b border-wire last:border-b-0 hover:bg-raised transition-colors duration-200 disabled:opacity-40 group animate-fadeInUp rounded-lg px-2"
+              style={{ animationDelay: `${i * 55}ms` }}
             >
-              {/* Cover */}
-              <div className="w-12 h-[68px] bg-[var(--color-surface-raised)] shrink-0 overflow-hidden relative rounded-lg shadow-[var(--shadow-sm)]">
+              <div className="w-12 h-[68px] bg-raised shrink-0 overflow-hidden relative rounded-lg border border-wire">
                 {coverUrl ? (
-                  <Image
-                    src={coverUrl}
-                    alt={`Cover of ${result.title}`}
-                    fill
-                    sizes="48px"
-                    className="object-cover"
-                    loading="lazy"
-                  />
+                  <Image src={coverUrl} alt={result.title} fill sizes="48px" className="object-cover" loading="lazy" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
-                    <span className="font-display text-[7px] text-[var(--color-ink-tertiary)] text-center leading-tight px-0.5">
+                    <span className="font-display text-[7px] text-ink-3 text-center leading-tight px-0.5">
                       {result.title.slice(0, 15)}
                     </span>
                   </div>
                 )}
               </div>
 
-              {/* Text */}
               <div className="flex-1 min-w-0">
-                <p className="font-sans text-[14px] text-[var(--color-ink)] truncate leading-tight group-hover:text-[var(--color-accent)] transition-colors duration-300">
+                <p className="font-sans text-[14px] text-ink truncate leading-tight group-hover:text-gold transition-colors duration-200">
                   {result.title}
                 </p>
-                <p className="font-sans text-[12px] text-[var(--color-ink-secondary)] truncate mt-1">
-                  {result.author}
-                </p>
+                <p className="font-sans text-[12px] text-ink-2 truncate mt-0.5">{result.author}</p>
                 {result.year && (
-                  <p className="font-mono text-[10px] text-[var(--color-ink-tertiary)] mt-1">
-                    {result.year}
-                  </p>
+                  <p className="font-mono text-[10px] text-ink-3 mt-1">{result.year}</p>
                 )}
               </div>
 
-              {/* Add indicator — glowing plus */}
-              <div className="shrink-0 text-[var(--color-ink-tertiary)] group-hover:text-[var(--color-accent)] transition-colors duration-300">
+              <div className="shrink-0 text-ink-3 group-hover:text-gold transition-colors duration-200">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
                   <path d="M8 3v10M3 8h10" />
                 </svg>

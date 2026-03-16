@@ -11,8 +11,7 @@ export default function SettingsPage() {
   const { showToast } = useToast()
 
   useEffect(() => {
-    const saved = localStorage.getItem('tsundoku_anthropic_key') ?? ''
-    setApiKey(saved)
+    setApiKey(localStorage.getItem('tsundoku_anthropic_key') ?? '')
   }, [])
 
   const handleSaveKey = useCallback(() => {
@@ -22,8 +21,7 @@ export default function SettingsPage() {
 
   const handleExport = useCallback(() => {
     const date = new Date().toISOString().split('T')[0]
-    const data = JSON.stringify(books, null, 2)
-    const blob = new Blob([data], { type: 'application/json' })
+    const blob = new Blob([JSON.stringify(books, null, 2)], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
@@ -41,18 +39,15 @@ export default function SettingsPage() {
       const file = (e.target as HTMLInputElement).files?.[0]
       if (!file) return
       try {
-        const text = await file.text()
-        const data = JSON.parse(text)
-        if (!Array.isArray(data)) throw new Error('Invalid format')
+        const data = JSON.parse(await file.text())
+        if (!Array.isArray(data)) throw new Error()
         const valid = data.filter(
           (b: Record<string, unknown>) =>
-            typeof b.id === 'string' &&
-            typeof b.title === 'string' &&
-            typeof b.author === 'string' &&
-            typeof b.status === 'string' &&
+            typeof b.id === 'string' && typeof b.title === 'string' &&
+            typeof b.author === 'string' && typeof b.status === 'string' &&
             typeof b.date_added === 'number'
         )
-        if (valid.length === 0) throw new Error('No valid books found')
+        if (valid.length === 0) throw new Error()
         await importBooks(valid)
         const skipped = data.length - valid.length
         showToast(`Imported ${valid.length} books${skipped > 0 ? ` (${skipped} skipped)` : ''}`)
@@ -72,23 +67,21 @@ export default function SettingsPage() {
   return (
     <div>
       <header className="mb-8 md:mb-10">
-        <h1 className="font-display text-[32px] md:text-[42px] text-[var(--color-ink)] tracking-[-0.02em]">
-          Settings
-        </h1>
-        <div className="w-12 h-[2px] bg-[var(--color-accent)] mt-3 opacity-60" />
+        <h1 className="font-display text-[34px] md:text-[44px] text-ink tracking-[-0.025em]">Settings</h1>
+        <div className="w-10 h-[2px] bg-gold mt-3 opacity-50" />
       </header>
 
-      {/* API Key */}
+      {/* Sections helper */}
+      {(['AI Categorization', 'Storage', 'Data'] as const).map(() => null)}
+
       <section className="mb-12">
         <div className="flex items-center gap-3 mb-5">
-          <h2 className="font-mono text-[10px] tracking-[0.08em] text-[var(--color-accent)] uppercase">
-            AI Categorization
-          </h2>
-          <div className="flex-1 h-px bg-[var(--color-border)]" />
+          <h2 className="font-mono text-[10px] tracking-[0.08em] text-gold uppercase">AI Categorization</h2>
+          <div className="flex-1 h-px bg-wire" />
         </div>
-        <p className="font-sans text-[13px] text-[var(--color-ink-secondary)] leading-relaxed mb-4 max-w-md">
+        <p className="font-sans text-[13px] text-ink-2 leading-relaxed mb-4 max-w-md">
           Add your Anthropic API key to enable automatic genre categorization.
-          Stored locally in your browser — never sent to our servers.
+          Stored locally — never sent to our servers.
         </p>
         <div className="flex gap-2 max-w-md">
           <input
@@ -96,90 +89,61 @@ export default function SettingsPage() {
             value={apiKey}
             onChange={(e) => setApiKey(e.target.value)}
             placeholder="sk-ant-..."
-            className="flex-1 px-4 py-3 text-[13px] font-mono bg-[var(--color-surface)] text-[var(--color-ink)] border border-[var(--color-border)] rounded-xl outline-none input-glow transition-all duration-300"
+            className="flex-1 px-4 py-3 text-[13px] font-mono bg-raised text-ink border border-wire rounded-xl input-focus"
           />
           <button
             onClick={handleSaveKey}
-            className="px-5 py-3 text-[13px] font-sans tracking-[0.01em] bg-[var(--color-accent)] text-[var(--color-bg)] rounded-xl hover:shadow-[var(--shadow-glow)] transition-all duration-300 btn-magnetic"
+            className="px-5 py-3 text-[13px] font-sans bg-gold text-bg rounded-xl btn-press gold-glow"
           >
             Save
           </button>
         </div>
       </section>
 
-      {/* Storage */}
       <section className="mb-12">
         <div className="flex items-center gap-3 mb-5">
-          <h2 className="font-mono text-[10px] tracking-[0.08em] text-[var(--color-accent)] uppercase">
-            Storage
-          </h2>
-          <div className="flex-1 h-px bg-[var(--color-border)]" />
+          <h2 className="font-mono text-[10px] tracking-[0.08em] text-gold uppercase">Storage</h2>
+          <div className="flex-1 h-px bg-wire" />
         </div>
         <div className="space-y-2 max-w-md">
-          <div className="flex items-center justify-between px-4 py-3.5 glass rounded-xl">
+          <div className="flex items-center justify-between px-4 py-3.5 bg-surface border border-wire rounded-xl">
             <div>
-              <span className="font-sans text-[14px] text-[var(--color-ink)]">IndexedDB</span>
-              <p className="font-sans text-[11px] text-[var(--color-ink-tertiary)] mt-0.5">Local browser storage</p>
+              <span className="font-sans text-[14px] text-ink">IndexedDB</span>
+              <p className="font-sans text-[11px] text-ink-3 mt-0.5">Local browser storage</p>
             </div>
-            <span className="font-mono text-[10px] tracking-[0.04em] uppercase text-[var(--color-success)]">Active</span>
+            <span className="font-mono text-[10px] tracking-[0.04em] uppercase text-green">Active</span>
           </div>
-          <div className="flex items-center justify-between px-4 py-3.5 rounded-xl border border-[var(--color-border)] opacity-40">
-            <div>
-              <span className="font-sans text-[14px] text-[var(--color-ink)]">Notion</span>
-              <p className="font-sans text-[11px] text-[var(--color-ink-tertiary)] mt-0.5">Sync with Notion database</p>
+          {['Notion', 'Google Drive'].map((name) => (
+            <div key={name} className="flex items-center justify-between px-4 py-3.5 border border-wire rounded-xl opacity-35">
+              <span className="font-sans text-[14px] text-ink">{name}</span>
+              <span className="font-mono text-[10px] tracking-[0.04em] uppercase text-ink-3">Soon</span>
             </div>
-            <span className="font-mono text-[10px] tracking-[0.04em] uppercase text-[var(--color-ink-tertiary)]">Soon</span>
-          </div>
-          <div className="flex items-center justify-between px-4 py-3.5 rounded-xl border border-[var(--color-border)] opacity-40">
-            <div>
-              <span className="font-sans text-[14px] text-[var(--color-ink)]">Google Drive</span>
-              <p className="font-sans text-[11px] text-[var(--color-ink-tertiary)] mt-0.5">Sync across devices</p>
-            </div>
-            <span className="font-mono text-[10px] tracking-[0.04em] uppercase text-[var(--color-ink-tertiary)]">Soon</span>
-          </div>
+          ))}
         </div>
       </section>
 
-      {/* Data */}
       <section className="mb-12">
         <div className="flex items-center gap-3 mb-5">
-          <h2 className="font-mono text-[10px] tracking-[0.08em] text-[var(--color-accent)] uppercase">
-            Data
-          </h2>
-          <div className="flex-1 h-px bg-[var(--color-border)]" />
+          <h2 className="font-mono text-[10px] tracking-[0.08em] text-gold uppercase">Data</h2>
+          <div className="flex-1 h-px bg-wire" />
         </div>
         <div className="flex flex-wrap gap-2">
-          <button
-            onClick={handleExport}
-            className="px-4 py-2.5 text-[12px] font-sans tracking-[0.01em] border border-[var(--color-border)] rounded-xl text-[var(--color-ink-secondary)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-all duration-300 btn-magnetic"
-          >
+          <button onClick={handleExport} className="px-4 py-2.5 text-[12px] font-sans border border-wire rounded-xl text-ink-2 hover:border-wire-2 hover:text-ink transition-colors duration-200">
             Export JSON
           </button>
-          <button
-            onClick={handleImport}
-            className="px-4 py-2.5 text-[12px] font-sans tracking-[0.01em] border border-[var(--color-border)] rounded-xl text-[var(--color-ink-secondary)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-all duration-300 btn-magnetic"
-          >
+          <button onClick={handleImport} className="px-4 py-2.5 text-[12px] font-sans border border-wire rounded-xl text-ink-2 hover:border-wire-2 hover:text-ink transition-colors duration-200">
             Import JSON
           </button>
           {!showClearConfirm ? (
-            <button
-              onClick={() => setShowClearConfirm(true)}
-              className="px-4 py-2.5 text-[12px] font-sans tracking-[0.01em] border border-[var(--color-border)] rounded-xl text-red-400 hover:border-red-400 transition-all duration-300"
-            >
+            <button onClick={() => setShowClearConfirm(true)} className="px-4 py-2.5 text-[12px] font-sans border border-wire rounded-xl text-red-400 hover:border-red-400 transition-colors duration-200">
               Clear All Data
             </button>
           ) : (
             <div className="flex gap-2 animate-fadeIn">
-              <button
-                onClick={handleClear}
-                className="px-4 py-2.5 text-[12px] font-sans tracking-[0.01em] bg-red-500 text-white rounded-xl hover:bg-red-400 transition-colors duration-200"
-              >
+              <button onClick={handleClear} className="px-4 py-2.5 text-[12px] font-sans bg-red-600 text-white rounded-xl hover:bg-red-500 transition-colors duration-200">
                 Yes, clear everything
               </button>
-              <button
-                onClick={() => setShowClearConfirm(false)}
-                className="px-4 py-2.5 text-[12px] font-sans tracking-[0.01em] border border-[var(--color-border)] rounded-xl text-[var(--color-ink-secondary)]"
-              >
+              <button onClick={() => setShowClearConfirm(false)} className="px-4 py-2.5 text-[12px] font-sans border border-wire rounded-xl text-ink-2">
                 Cancel
               </button>
             </div>
@@ -187,12 +151,9 @@ export default function SettingsPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="pt-8 border-t border-[var(--color-border)]">
-        <p className="font-mono text-[10px] tracking-[0.04em] text-[var(--color-ink-tertiary)]">
-          Tsundoku v0.1.0
-        </p>
-        <p className="font-mono text-[10px] text-[var(--color-ink-tertiary)] mt-1">
+      <footer className="pt-8 border-t border-wire">
+        <p className="font-mono text-[10px] tracking-[0.04em] text-ink-3">Tsundoku v0.1.0</p>
+        <p className="font-mono text-[10px] text-ink-3 mt-1">
           {books.length} {books.length === 1 ? 'book' : 'books'} stored locally
         </p>
       </footer>

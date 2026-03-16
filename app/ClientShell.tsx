@@ -9,13 +9,13 @@ export function ClientShell({ children }: { children: ReactNode }) {
   return (
     <StorageProvider>
       <ToastProvider>
-        {/* Ambient orbs */}
-        <div className="ambient-orb ambient-orb-1" />
-        <div className="ambient-orb ambient-orb-2" />
+        {/* Decorative ambient orbs — behind everything */}
+        <div className="orb orb-gold" />
+        <div className="orb orb-purple" />
 
         <DesktopNav />
         <MobileNav />
-        <main className="md:ml-[72px] pb-[80px] md:pb-0 min-h-screen relative z-[1]">
+        <main className="md:ml-[68px] pb-[76px] md:pb-0 min-h-screen">
           <div className="max-w-[1100px] mx-auto px-5 md:px-10 lg:px-14 py-6 md:py-10">
             {children}
           </div>

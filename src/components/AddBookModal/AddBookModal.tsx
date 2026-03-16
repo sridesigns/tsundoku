@@ -24,7 +24,8 @@ const tabs: { key: CaptureTab; label: string; icon: (active: boolean) => React.R
     key: 'type',
     label: 'Search',
     icon: (active) => (
-      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth={active ? '1.8' : '1.5'} strokeLinecap="round">
+      <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor"
+           strokeWidth={active ? '1.8' : '1.5'} strokeLinecap="round">
         <circle cx="8" cy="8" r="5.5" />
         <path d="M15.5 15.5l-3-3" />
       </svg>
@@ -34,7 +35,8 @@ const tabs: { key: CaptureTab; label: string; icon: (active: boolean) => React.R
     key: 'voice',
     label: 'Voice',
     icon: (active) => (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? '1.8' : '1.5'} strokeLinecap="round">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           strokeWidth={active ? '1.8' : '1.5'} strokeLinecap="round">
         <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" />
         <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5" />
         <path d="M12 19v2" />
@@ -45,7 +47,8 @@ const tabs: { key: CaptureTab; label: string; icon: (active: boolean) => React.R
     key: 'camera',
     label: 'Camera',
     icon: (active) => (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? '1.8' : '1.5'} strokeLinecap="round" strokeLinejoin="round">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           strokeWidth={active ? '1.8' : '1.5'} strokeLinecap="round" strokeLinejoin="round">
         <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" />
         <circle cx="12" cy="13" r="4" />
       </svg>
@@ -69,19 +72,14 @@ export function AddBookModal({ isOpen, onClose }: AddBookModalProps) {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => setIsVisible(true))
-      })
+      requestAnimationFrame(() => requestAnimationFrame(() => setIsVisible(true)))
     } else {
       document.body.style.overflow = ''
       setIsVisible(false)
     }
-    return () => {
-      document.body.style.overflow = ''
-    }
+    return () => { document.body.style.overflow = '' }
   }, [isOpen])
 
-  // Voice → search
   useEffect(() => {
     if (voice.transcript && !voice.isListening) {
       setQuery(voice.transcript)
@@ -90,7 +88,6 @@ export function AddBookModal({ isOpen, onClose }: AddBookModalProps) {
     }
   }, [voice.transcript, voice.isListening, search])
 
-  // Camera → search
   useEffect(() => {
     if (camera.extractedText) {
       setQuery(camera.extractedText)
@@ -99,13 +96,10 @@ export function AddBookModal({ isOpen, onClose }: AddBookModalProps) {
     }
   }, [camera.extractedText, search])
 
-  const handleSearch = useCallback(
-    (value: string) => {
-      setQuery(value)
-      search(value)
-    },
-    [search]
-  )
+  const handleSearch = useCallback((value: string) => {
+    setQuery(value)
+    search(value)
+  }, [search])
 
   const handleSelect = async (result: SearchResult) => {
     setIsAdding(true)
@@ -114,9 +108,7 @@ export function AddBookModal({ isOpen, onClose }: AddBookModalProps) {
     const bookData = createBookFromSearch(result, captureMethod)
     const book = await addBook(bookData)
     showToast(`Added "${result.title}"`)
-
     categorizeBook(book.id, result)
-
     setIsAdding(false)
     handleClose()
   }
@@ -126,11 +118,7 @@ export function AddBookModal({ isOpen, onClose }: AddBookModalProps) {
       const res = await fetch('/api/categorize', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          title: result.title,
-          author: result.author,
-          description: result.description,
-        }),
+        body: JSON.stringify({ title: result.title, author: result.author, description: result.description }),
       })
       if (res.ok) {
         const data: { genre: Genre } = await res.json()
@@ -150,52 +138,46 @@ export function AddBookModal({ isOpen, onClose }: AddBookModalProps) {
       voice.resetTranscript()
       camera.reset()
       document.body.style.overflow = ''
-    }, 350)
+    }, 320)
   }
 
   if (!isOpen) return null
 
   return (
     <>
-      {/* Backdrop — cinematic blur */}
+      {/* Backdrop */}
       <div
-        className="fixed inset-0 z-50 transition-all duration-500"
+        className="fixed inset-0 z-50 transition-all duration-400"
         style={{
-          backgroundColor: isVisible ? 'rgba(0,0,0,0.7)' : 'rgba(0,0,0,0)',
-          backdropFilter: isVisible ? 'blur(12px)' : 'blur(0px)',
+          backgroundColor: isVisible ? 'rgba(0,0,0,0.6)' : 'rgba(0,0,0,0)',
+          backdropFilter: isVisible ? 'blur(8px)' : 'blur(0px)',
         }}
         onClick={handleClose}
       />
 
-      {/* Modal — centered overlay */}
-      <div
-        className="fixed inset-0 z-50 flex items-end md:items-center md:justify-center pointer-events-none"
-      >
+      {/* Modal */}
+      <div className="fixed inset-0 z-50 flex items-end md:items-center md:justify-center pointer-events-none">
         <div
           onClick={(e) => e.stopPropagation()}
-          className={`pointer-events-auto relative w-full md:w-[560px] max-h-[92vh] md:max-h-[85vh] rounded-t-2xl md:rounded-2xl overflow-y-auto overscroll-contain transition-all duration-500 safe-bottom glass-strong
+          className={`pointer-events-auto relative w-full md:w-[540px] max-h-[92vh] md:max-h-[84vh] bg-surface border border-wire rounded-t-2xl md:rounded-2xl overflow-y-auto overscroll-contain safe-bottom transition-all duration-400 drawer-timing
             ${isVisible
-              ? 'translate-y-0 md:translate-y-0 md:scale-100 opacity-100'
-              : 'translate-y-full md:translate-y-8 md:scale-[0.96] opacity-0'
+              ? 'translate-y-0 md:scale-100 opacity-100'
+              : 'translate-y-full md:translate-y-6 md:scale-[0.97] opacity-0'
             }`}
-          style={{
-            boxShadow: isVisible ? '0 32px 80px rgba(0,0,0,0.5), 0 0 60px rgba(232,168,56,0.05)' : 'none',
-          }}
+          style={{ boxShadow: '0 24px 80px rgba(0,0,0,0.55)' }}
         >
-          {/* Mobile drag indicator */}
-          <div className="md:hidden flex justify-center pt-3 pb-1 sticky top-0 z-10" style={{ background: 'rgba(28,28,31,0.9)', backdropFilter: 'blur(20px)' }}>
-            <div className="w-10 h-1 rounded-full bg-[var(--color-border-strong)]" />
+          {/* Mobile drag handle */}
+          <div className="md:hidden flex justify-center pt-3 pb-1 sticky top-0 bg-surface z-10 border-b border-wire">
+            <div className="w-10 h-1 rounded-full bg-wire-2" />
           </div>
 
-          <div className="modal-content-padding">
+          <div className="modal-pad">
             {/* Header */}
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="font-display text-[24px] text-[var(--color-ink)] tracking-[-0.01em]">
-                Add a book
-              </h2>
+            <div className="flex items-center justify-between mb-7">
+              <h2 className="font-display text-[24px] text-ink tracking-[-0.01em]">Add a book</h2>
               <button
                 onClick={handleClose}
-                className="p-2 rounded-xl text-[var(--color-ink-tertiary)] hover:text-[var(--color-ink)] hover:bg-[rgba(255,255,255,0.04)] transition-all duration-200"
+                className="p-2 rounded-xl text-ink-3 hover:text-ink hover:bg-raised transition-colors duration-200"
                 aria-label="Close"
               >
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
@@ -204,18 +186,18 @@ export function AddBookModal({ isOpen, onClose }: AddBookModalProps) {
               </button>
             </div>
 
-            {/* Tabs — glass segmented control */}
-            <div className="flex gap-1 mb-8 p-1 rounded-xl glass">
+            {/* Tabs */}
+            <div className="flex gap-1 mb-7 p-1 rounded-xl bg-raised border border-wire">
               {tabs.map((t) => {
                 const active = tab === t.key
                 return (
                   <button
                     key={t.key}
                     onClick={() => setTab(t.key)}
-                    className={`flex-1 flex items-center justify-center gap-2 py-3 text-[12px] font-sans tracking-[0.02em] rounded-lg transition-all duration-300 ${
+                    className={`flex-1 flex items-center justify-center gap-2 py-2.5 text-[12px] font-sans rounded-lg transition-all duration-200 ${
                       active
-                        ? 'bg-[var(--color-accent)] text-[var(--color-bg)] shadow-[0_0_20px_rgba(232,168,56,0.15)]'
-                        : 'text-[var(--color-ink-tertiary)] hover:text-[var(--color-ink-secondary)]'
+                        ? 'bg-gold text-bg'
+                        : 'text-ink-3 hover:text-ink-2'
                     }`}
                   >
                     {t.icon(active)}
@@ -225,47 +207,23 @@ export function AddBookModal({ isOpen, onClose }: AddBookModalProps) {
               })}
             </div>
 
-            {/* Capture area */}
-            {tab === 'type' && (
-              <TypedSearch
-                query={query}
-                onQueryChange={handleSearch}
-                isSearching={isSearching}
-              />
-            )}
-            {tab === 'voice' && (
+            {tab === 'type'   && <TypedSearch query={query} onQueryChange={handleSearch} isSearching={isSearching} />}
+            {tab === 'voice'  && (
               <VoiceCapture
-                isListening={voice.isListening}
-                isSupported={voice.isSupported}
-                transcript={voice.transcript}
-                interimTranscript={voice.interimTranscript}
-                error={voice.error}
-                onStart={voice.startListening}
-                onStop={voice.stopListening}
+                isListening={voice.isListening} isSupported={voice.isSupported}
+                transcript={voice.transcript} interimTranscript={voice.interimTranscript}
+                error={voice.error} onStart={voice.startListening} onStop={voice.stopListening}
               />
             )}
             {tab === 'camera' && (
-              <CameraCapture
-                isProcessing={camera.isProcessing}
-                error={camera.error}
-                onCapture={camera.processImage}
-              />
+              <CameraCapture isProcessing={camera.isProcessing} error={camera.error} onCapture={camera.processImage} />
             )}
 
-            {/* Error */}
             {error && (
-              <p className="font-sans text-[12px] text-[var(--color-accent)] mt-4 text-center">
-                {error}
-              </p>
+              <p className="font-sans text-[12px] text-gold mt-4 text-center">{error}</p>
             )}
 
-            {/* Results */}
-            <SearchResults
-              results={results}
-              isSearching={isSearching}
-              isAdding={isAdding}
-              onSelect={handleSelect}
-            />
+            <SearchResults results={results} isSearching={isSearching} isAdding={isAdding} onSelect={handleSelect} />
           </div>
         </div>
       </div>

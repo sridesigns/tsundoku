@@ -17,61 +17,55 @@ export function BookDetail({ book, onClose, onMarkAsRead, onRemove }: BookDetail
   useEffect(() => {
     if (book) {
       document.body.style.overflow = 'hidden'
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => setIsVisible(true))
-      })
+      requestAnimationFrame(() => requestAnimationFrame(() => setIsVisible(true)))
     } else {
       document.body.style.overflow = ''
       setIsVisible(false)
     }
-    return () => {
-      document.body.style.overflow = ''
-    }
+    return () => { document.body.style.overflow = '' }
   }, [book])
 
   const handleClose = () => {
     setIsVisible(false)
-    setTimeout(onClose, 350)
+    setTimeout(onClose, 320)
   }
 
   if (!book) return null
 
   return (
     <>
-      {/* Backdrop — heavy blur */}
+      {/* Backdrop */}
       <div
-        className="fixed inset-0 z-50 transition-all duration-500"
+        className="fixed inset-0 z-50 transition-all duration-400"
         style={{
-          backgroundColor: isVisible ? 'rgba(0,0,0,0.6)' : 'rgba(0,0,0,0)',
-          backdropFilter: isVisible ? 'blur(8px)' : 'blur(0px)',
+          backgroundColor: isVisible ? 'rgba(0,0,0,0.55)' : 'rgba(0,0,0,0)',
+          backdropFilter: isVisible ? 'blur(6px)' : 'blur(0px)',
         }}
         onClick={handleClose}
       />
 
-      {/* Drawer — slides from right on desktop, bottom on mobile */}
+      {/* Drawer */}
       <div
-        className={`fixed z-50 overflow-y-auto overscroll-contain
-          bottom-0 left-0 right-0 max-h-[92vh] rounded-t-2xl
-          md:top-0 md:right-0 md:bottom-0 md:left-auto md:max-h-none md:w-[480px] md:rounded-none
-          transition-all duration-500 drawer-timing glass-strong
+        className={`fixed z-50 bg-surface border-l border-wire overflow-y-auto overscroll-contain
+          bottom-0 left-0 right-0 max-h-[92vh] rounded-t-2xl border-l-0 border-t border-wire
+          md:top-0 md:right-0 md:bottom-0 md:left-auto md:max-h-none md:w-[460px] md:rounded-none
+          transition-transform duration-350 drawer-timing
           ${isVisible
             ? 'translate-y-0 md:translate-x-0'
             : 'translate-y-full md:translate-y-0 md:translate-x-full'
           }`}
-        style={{
-          boxShadow: isVisible ? '-20px 0 60px rgba(0,0,0,0.3)' : 'none',
-        }}
+        style={{ boxShadow: '-12px 0 48px rgba(0,0,0,0.4)' }}
       >
-        {/* Mobile drag indicator */}
+        {/* Mobile drag handle */}
         <div className="md:hidden flex justify-center pt-3 pb-1">
-          <div className="w-10 h-1 rounded-full bg-[var(--color-border-strong)]" />
+          <div className="w-10 h-1 rounded-full bg-wire-2" />
         </div>
 
-        <div className="px-6 md:px-10 pt-6 md:pt-10 pb-10 safe-bottom">
-          {/* Close button */}
+        <div className="px-6 md:px-9 pt-6 md:pt-8 pb-10 safe-bottom">
+          {/* Close */}
           <button
             onClick={handleClose}
-            className="mb-8 p-2 -ml-2 rounded-xl text-[var(--color-ink-tertiary)] hover:text-[var(--color-ink)] hover:bg-[rgba(255,255,255,0.04)] transition-all duration-200"
+            className="mb-8 p-2 -ml-2 rounded-xl text-ink-3 hover:text-ink hover:bg-raised transition-colors duration-200"
             aria-label="Close"
           >
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
@@ -79,25 +73,19 @@ export function BookDetail({ book, onClose, onMarkAsRead, onRemove }: BookDetail
             </svg>
           </button>
 
-          {/* Cover — with glow effect */}
+          {/* Cover with soft glow */}
           {book.cover_url && (
-            <div className="relative w-full max-w-[220px] mx-auto mb-10">
-              {/* Glow behind cover */}
-              <div className="absolute inset-0 scale-110 blur-3xl opacity-20 rounded-2xl overflow-hidden">
-                <Image
-                  src={book.cover_url}
-                  alt=""
-                  fill
-                  sizes="220px"
-                  className="object-cover"
-                />
+            <div className="relative w-full max-w-[200px] mx-auto mb-9">
+              {/* Blurred glow layer */}
+              <div className="absolute inset-[-20%] blur-3xl opacity-15 rounded-full overflow-hidden pointer-events-none">
+                <Image src={book.cover_url} alt="" fill sizes="200px" className="object-cover" />
               </div>
-              <div className="aspect-[2/3] relative rounded-xl overflow-hidden shadow-[var(--shadow-lg)]">
+              <div className="aspect-[2/3] relative rounded-xl overflow-hidden"
+                   style={{ boxShadow: '0 8px 40px rgba(0,0,0,0.5)' }}>
                 <Image
                   src={book.cover_url}
-                  alt={`Cover of ${book.title} by ${book.author}`}
-                  fill
-                  sizes="220px"
+                  alt={`${book.title}`}
+                  fill sizes="200px"
                   className="object-cover"
                   priority
                 />
@@ -105,23 +93,20 @@ export function BookDetail({ book, onClose, onMarkAsRead, onRemove }: BookDetail
             </div>
           )}
 
-          {/* Title & Author */}
-          <h2 className="font-display text-[26px] md:text-[32px] text-[var(--color-ink)] leading-[1.15] tracking-[-0.02em]">
+          <h2 className="font-display text-[26px] md:text-[30px] text-ink leading-[1.15] tracking-[-0.02em]">
             {book.title}
           </h2>
-          <p className="font-sans text-[15px] text-[var(--color-ink-secondary)] mt-2 mb-6">
-            {book.author}
-          </p>
+          <p className="font-sans text-[15px] text-ink-2 mt-2 mb-6">{book.author}</p>
 
-          {/* Meta tags — glass pills */}
-          <div className="flex gap-2 flex-wrap mb-8">
+          {/* Meta pills */}
+          <div className="flex gap-2 flex-wrap mb-7">
             {book.genre && (
-              <span className="font-mono text-[10px] tracking-[0.06em] uppercase px-3 py-1.5 rounded-full glass-accent text-[var(--color-accent)]">
+              <span className="font-mono text-[10px] tracking-[0.06em] uppercase px-3 py-1.5 rounded-full bg-gold/10 text-gold border border-gold/20">
                 {book.genre}
               </span>
             )}
             {book.year && (
-              <span className="font-mono text-[10px] tracking-[0.04em] px-3 py-1.5 rounded-full glass text-[var(--color-ink-secondary)]">
+              <span className="font-mono text-[10px] tracking-[0.04em] px-3 py-1.5 rounded-full bg-raised text-ink-2 border border-wire">
                 {book.year}
               </span>
             )}
@@ -129,19 +114,15 @@ export function BookDetail({ book, onClose, onMarkAsRead, onRemove }: BookDetail
 
           {/* Description */}
           {book.description && (
-            <div className="mb-8">
-              <p className="font-sans text-[13px] text-[var(--color-ink-secondary)] leading-[1.8]">
-                {book.description}
-              </p>
-            </div>
+            <p className="font-sans text-[13px] text-ink-2 leading-[1.8] mb-7">
+              {book.description}
+            </p>
           )}
 
           {/* Date */}
-          <p className="font-mono text-[10px] tracking-[0.04em] text-[var(--color-ink-tertiary)] uppercase mb-10">
+          <p className="font-mono text-[10px] tracking-[0.04em] text-ink-3 uppercase mb-9">
             Added {new Date(book.date_added).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
+              year: 'numeric', month: 'long', day: 'numeric',
             })}
           </p>
 
@@ -150,13 +131,13 @@ export function BookDetail({ book, onClose, onMarkAsRead, onRemove }: BookDetail
             <div className="flex gap-3">
               <button
                 onClick={() => onMarkAsRead(book.id)}
-                className="flex-1 py-3.5 text-[13px] font-sans tracking-[0.01em] bg-[var(--color-accent)] text-[var(--color-bg)] rounded-xl hover:shadow-[var(--shadow-glow)] transition-all duration-300 btn-magnetic"
+                className="flex-1 py-3.5 text-[13px] font-sans tracking-[0.01em] bg-gold text-bg rounded-xl btn-press gold-glow"
               >
                 Mark as Read
               </button>
               <button
                 onClick={() => onRemove(book.id)}
-                className="px-5 py-3.5 text-[13px] font-sans tracking-[0.01em] border border-[var(--color-border)] rounded-xl text-[var(--color-ink-secondary)] hover:border-[var(--color-border-strong)] hover:text-[var(--color-ink)] transition-all duration-300"
+                className="px-5 py-3.5 text-[13px] font-sans border border-wire rounded-xl text-ink-2 hover:border-wire-2 hover:text-ink transition-colors duration-200"
               >
                 Remove
               </button>

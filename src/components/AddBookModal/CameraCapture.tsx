@@ -39,14 +39,14 @@ export function CameraCapture({ isProcessing, error, onCapture }: CameraCaptureP
   if (cameraError) {
     return (
       <div className="flex flex-col items-center py-12 px-4">
-        <div className="w-16 h-16 flex items-center justify-center bg-raised rounded-2xl border border-wire mb-4">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="text-ink-3" strokeWidth="1.5" strokeLinecap="round">
+        <div className="w-16 h-16 flex items-center justify-center bg-fog rounded-2xl border border-edge mb-4">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="text-faint" strokeWidth="1.5" strokeLinecap="round">
             <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" />
             <circle cx="12" cy="13" r="4" />
             <line x1="1" y1="1" x2="23" y2="23" />
           </svg>
         </div>
-        <p className="font-sans text-[13px] text-ink-2 text-center leading-relaxed max-w-[260px]">
+        <p className="font-sans text-[13px] text-muted text-center leading-relaxed max-w-[260px]">
           Camera access denied. Check your browser permissions, or try typing instead.
         </p>
       </div>
@@ -55,7 +55,7 @@ export function CameraCapture({ isProcessing, error, onCapture }: CameraCaptureP
 
   return (
     <div className="flex flex-col items-center">
-      <div className="w-full max-w-[300px] aspect-[3/4] bg-black overflow-hidden relative rounded-2xl border border-wire">
+      <div className="w-full max-w-[300px] aspect-[3/4] bg-ink overflow-hidden relative rounded-3xl border border-edge">
         <Webcam
           ref={webcamRef as React.RefObject<never>}
           screenshotFormat="image/png"
@@ -67,42 +67,42 @@ export function CameraCapture({ isProcessing, error, onCapture }: CameraCaptureP
           audio={false}
         />
         {!cameraReady && !cameraError && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-surface">
-            <div className="w-5 h-5 border-[1.5px] border-gold border-t-transparent rounded-full animate-spin mb-3" />
-            <p className="font-sans text-[12px] text-ink-3">Starting camera...</p>
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-fog">
+            <div className="w-5 h-5 border-2 border-pop border-t-transparent rounded-full animate-spin mb-3" />
+            <p className="font-sans text-[12px] text-muted">Starting camera...</p>
           </div>
         )}
         {cameraReady && (
           <div className="absolute inset-4 pointer-events-none">
-            <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-gold/50" />
-            <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-gold/50" />
-            <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-gold/50" />
-            <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-gold/50" />
+            <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-snow/60 rounded-tl-lg" />
+            <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-snow/60 rounded-tr-lg" />
+            <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-snow/60 rounded-bl-lg" />
+            <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-snow/60 rounded-br-lg" />
           </div>
         )}
       </div>
 
-      <p className="font-sans text-[11px] text-ink-3 mt-3 mb-4 text-center">
+      <p className="font-sans text-[11px] text-faint mt-3 mb-4 text-center">
         Point at a book cover or title page
       </p>
 
       {isProcessing ? (
         <div className="flex items-center gap-2.5 py-3">
-          <div className="w-4 h-4 border-[1.5px] border-gold border-t-transparent rounded-full animate-spin" />
-          <span className="font-sans text-[13px] text-ink-2">Reading text...</span>
+          <div className="w-4 h-4 border-2 border-pop border-t-transparent rounded-full animate-spin" />
+          <span className="font-sans text-[13px] text-muted">Reading text...</span>
         </div>
       ) : (
         <button
           onClick={handleCapture}
           disabled={!cameraReady}
-          className="px-8 py-3.5 text-[13px] font-sans bg-gold text-bg rounded-xl btn-press gold-glow disabled:opacity-30"
+          className="px-8 py-3.5 text-[13px] font-sans font-medium btn-pop text-snow disabled:opacity-30"
         >
           Capture
         </button>
       )}
 
       {error && (
-        <p className="font-sans text-[12px] text-gold mt-4 text-center max-w-[280px] leading-relaxed">{error}</p>
+        <p className="font-sans text-[12px] text-heat mt-4 text-center max-w-[280px] leading-relaxed">{error}</p>
       )}
     </div>
   )

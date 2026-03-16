@@ -56,11 +56,11 @@ export default function CollectionPage() {
   if (isLoading) {
     return (
       <div>
-        <header className="mb-9">
-          <h1 className="font-display text-[34px] md:text-[44px] text-ink tracking-[-0.025em]">Collection</h1>
-          <div className="w-10 h-[2px] bg-gold mt-3 opacity-50" />
+        <header className="mb-8">
+          <h1 className="font-serif text-[32px] md:text-[42px] text-ink tracking-tight">Collection</h1>
+          <div className="w-12 h-[3px] rounded-full mt-3" style={{ background: 'linear-gradient(135deg, #7C3AED, #EC4899)' }} />
         </header>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-7">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-6">
           {Array.from({ length: 8 }).map((_, i) => <BookCardSkeleton key={i} viewMode="grid" />)}
         </div>
       </div>
@@ -70,11 +70,8 @@ export default function CollectionPage() {
   if (hydrationError) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center">
-        <p className="font-sans text-[14px] text-gold mb-4">{hydrationError}</p>
-        <button
-          onClick={() => window.location.reload()}
-          className="px-5 py-2.5 text-[13px] font-sans border border-wire rounded-xl text-ink-2 hover:border-wire-2 hover:text-ink transition-colors duration-200"
-        >
+        <p className="font-sans text-[14px] text-heat mb-4">{hydrationError}</p>
+        <button onClick={() => window.location.reload()} className="btn-ghost px-5 py-2.5 text-[13px] font-sans">
           Refresh page
         </button>
       </div>
@@ -92,9 +89,9 @@ export default function CollectionPage() {
 
   return (
     <>
-      <header className="mb-8 md:mb-10">
-        <h1 className="font-display text-[34px] md:text-[44px] text-ink tracking-[-0.025em]">Collection</h1>
-        <div className="w-10 h-[2px] bg-gold mt-3 opacity-50" />
+      <header className="mb-8">
+        <h1 className="font-serif text-[32px] md:text-[42px] text-ink tracking-tight">Collection</h1>
+        <div className="w-12 h-[3px] rounded-full mt-3" style={{ background: 'linear-gradient(135deg, #7C3AED, #EC4899)' }} />
       </header>
 
       <FilterBar
@@ -105,13 +102,13 @@ export default function CollectionPage() {
       />
 
       {viewMode === 'grid' ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-8 md:gap-x-7 md:gap-y-10">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-8 md:gap-x-6 md:gap-y-10">
           {filteredBooks.map((book, i) => (
             <BookCard key={book.id} book={book} index={i} viewMode="grid" onClick={setSelectedBook} />
           ))}
         </div>
       ) : (
-        <div className="bg-surface border border-wire rounded-2xl overflow-hidden">
+        <div className="card overflow-hidden">
           {filteredBooks.map((book, i) => (
             <BookCard key={book.id} book={book} index={i} viewMode="list" onClick={setSelectedBook} />
           ))}
@@ -121,11 +118,10 @@ export default function CollectionPage() {
       {/* FAB */}
       <button
         onClick={() => setIsAddOpen(true)}
-        className="fixed bottom-[92px] right-5 md:bottom-10 md:right-10 w-14 h-14 rounded-2xl bg-gold text-bg z-30 flex items-center justify-center btn-press gold-glow"
-        style={{ boxShadow: '0 4px 20px rgba(232,168,56,0.3)' }}
+        className="fixed bottom-[92px] right-5 md:bottom-8 md:right-8 w-14 h-14 rounded-2xl z-30 flex items-center justify-center btn-pop text-snow"
         aria-label="Add book"
       >
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
           <path d="M11 3v16M3 11h16" />
         </svg>
       </button>

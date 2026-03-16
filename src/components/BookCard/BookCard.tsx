@@ -3,6 +3,20 @@
 import Image from 'next/image'
 import type { Book } from '@/src/types/book'
 
+function genreClass(genre: string | null): string {
+  if (!genre) return 'genre-default'
+  const g = genre.toLowerCase()
+  if (g.includes('sci')) return 'genre-scifi'
+  if (g.includes('fantasy')) return 'genre-fantasy'
+  if (g.includes('mystery') || g.includes('thriller')) return 'genre-mystery'
+  if (g.includes('history') || g.includes('historical')) return 'genre-history'
+  if (g.includes('philosophy')) return 'genre-philosophy'
+  if (g.includes('bio') || g.includes('memoir')) return 'genre-biography'
+  if (g.includes('non-fiction') || g.includes('science') || g.includes('nature')) return 'genre-nonfiction'
+  if (g.includes('fiction') || g.includes('literary')) return 'genre-fiction'
+  return 'genre-default'
+}
+
 interface BookCardProps {
   book: Book
   index: number
@@ -11,49 +25,37 @@ interface BookCardProps {
 }
 
 export function BookCard({ book, index, viewMode, onClick }: BookCardProps) {
-  const delay = Math.min(index * 55, 440)
+  const delay = Math.min(index * 50, 400)
 
   if (viewMode === 'list') {
     return (
       <button
         onClick={() => onClick(book)}
-        className="w-full flex items-center gap-4 px-4 py-4 text-left border-b border-wire last:border-b-0 hover:bg-raised transition-colors duration-200 animate-fadeInUp group"
+        className="w-full flex items-center gap-4 px-5 py-4 text-left border-b border-edge last:border-b-0 hover:bg-fog/60 transition-all duration-200 animate-fadeInUp group"
         style={{ animationDelay: `${delay}ms` }}
       >
-        <div className="w-11 h-[62px] bg-raised shrink-0 overflow-hidden relative rounded-lg">
+        <div className="w-12 h-[66px] shrink-0 overflow-hidden relative rounded-lg cover-shadow">
           {book.cover_url ? (
-            <Image
-              src={book.cover_url}
-              alt={`${book.title}`}
-              fill sizes="44px"
-              className="object-cover group-hover:scale-105 transition-transform duration-500"
-              loading="lazy"
-            />
+            <Image src={book.cover_url} alt={book.title} fill sizes="48px" className="object-cover" loading="lazy" />
           ) : (
-            <div className="w-full h-full flex items-center justify-center">
-              <span className="font-display text-[8px] text-ink-3 leading-tight text-center px-0.5">
-                {book.title.slice(0, 18)}
-              </span>
+            <div className="w-full h-full flex items-center justify-center bg-fog border border-edge">
+              <span className="font-serif text-[9px] text-muted text-center leading-tight px-1">{book.title.slice(0, 20)}</span>
             </div>
           )}
         </div>
 
         <div className="flex-1 min-w-0">
-          <p className="font-sans text-[14px] text-ink truncate leading-tight group-hover:text-gold transition-colors duration-200">
-            {book.title}
-          </p>
-          <p className="font-sans text-[12px] text-ink-2 truncate mt-0.5">
-            {book.author}
-          </p>
+          <p className="font-sans text-[14px] text-ink font-medium truncate group-hover:text-pop transition-colors duration-200">{book.title}</p>
+          <p className="font-sans text-[12px] text-muted truncate mt-0.5">{book.author}</p>
         </div>
 
         <div className="shrink-0 flex flex-col items-end gap-1.5">
-          {book.genre && (
-            <span className="font-mono text-[9px] tracking-[0.06em] text-gold/60 uppercase">
+          {book.genre && book.genre !== 'Other' && (
+            <span className={`${genreClass(book.genre)} genre-badge font-mono text-[9px] tracking-wide uppercase px-2.5 py-1 rounded-full`}>
               {book.genre}
             </span>
           )}
-          <span className="font-mono text-[10px] text-ink-3">
+          <span className="font-mono text-[10px] text-faint">
             {new Date(book.date_added).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
           </span>
         </div>
@@ -61,52 +63,34 @@ export function BookCard({ book, index, viewMode, onClick }: BookCardProps) {
     )
   }
 
-  // Grid card
   return (
     <button
       onClick={() => onClick(book)}
-      className="w-full text-left group book-card-3d animate-fadeInUp"
+      className="w-full text-left group animate-fadeInUp"
       style={{ animationDelay: `${delay}ms` }}
     >
-      {/* Cover */}
-      <div className="book-cover aspect-[2/3] bg-raised overflow-hidden relative mb-3.5 rounded-xl"
-           style={{ boxShadow: '0 4px 16px rgba(0,0,0,0.4)' }}>
+      <div className="aspect-[2/3] overflow-hidden relative mb-3 rounded-2xl cover-shadow">
         {book.cover_url ? (
-          <Image
-            src={book.cover_url}
-            alt={`${book.title}`}
-            fill
-            sizes="(max-width: 640px) 46vw, (max-width: 1024px) 30vw, 22vw"
-            className="object-cover"
-            loading="lazy"
-          />
+          <Image src={book.cover_url} alt={book.title} fill sizes="(max-width:640px) 46vw, (max-width:1024px) 30vw, 22vw" className="object-cover" loading="lazy" />
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center p-5 bg-gradient-to-br from-raised to-surface">
-            <div className="w-8 h-px bg-gold opacity-25 mb-4" />
-            <p className="font-display text-[12px] text-ink-2 text-center leading-snug italic">
-              {book.title}
-            </p>
-            <p className="font-sans text-[10px] text-ink-3 mt-2">{book.author}</p>
+          <div className="w-full h-full flex flex-col items-center justify-center p-4 bg-gradient-to-br from-fog to-snow border border-edge">
+            <div className="w-8 h-[2px] rounded-full mb-3" style={{ background: 'linear-gradient(135deg, #7C3AED, #EC4899)' }} />
+            <p className="font-serif text-[12px] text-ink text-center leading-snug italic">{book.title}</p>
+            <p className="font-sans text-[10px] text-muted mt-1.5">{book.author}</p>
           </div>
         )}
 
-        {/* Genre badge */}
         {book.genre && book.genre !== 'Other' && (
-          <div className="absolute bottom-0 left-0 right-0 px-3 py-2.5 bg-gradient-to-t from-black/65 to-transparent">
-            <span className="font-mono text-[9px] tracking-[0.08em] text-white/75 uppercase">
+          <div className="absolute bottom-2 left-2">
+            <span className={`${genreClass(book.genre)} genre-badge font-mono text-[8px] tracking-wider uppercase px-2 py-0.5 rounded-full`}>
               {book.genre}
             </span>
           </div>
         )}
-
-        {/* Hover border */}
-        <div className="absolute inset-0 rounded-xl border border-transparent group-hover:border-gold/20 transition-colors duration-400 pointer-events-none" />
       </div>
 
-      <p className="font-sans text-[13px] text-ink truncate leading-tight group-hover:text-gold transition-colors duration-200">
-        {book.title}
-      </p>
-      <p className="font-sans text-[11px] text-ink-3 truncate mt-0.5">{book.author}</p>
+      <p className="font-sans text-[13px] text-ink font-medium truncate leading-tight group-hover:text-pop transition-colors duration-200">{book.title}</p>
+      <p className="font-sans text-[11px] text-muted truncate mt-0.5">{book.author}</p>
     </button>
   )
 }
@@ -114,20 +98,20 @@ export function BookCard({ book, index, viewMode, onClick }: BookCardProps) {
 export function BookCardSkeleton({ viewMode }: { viewMode: 'grid' | 'list' }) {
   if (viewMode === 'list') {
     return (
-      <div className="flex items-center gap-4 px-4 py-4 border-b border-wire">
-        <div className="w-11 h-[62px] skeleton shrink-0" />
+      <div className="flex items-center gap-4 px-5 py-4 border-b border-edge">
+        <div className="w-12 h-[66px] skeleton shrink-0 rounded-lg" />
         <div className="flex-1 space-y-2">
-          <div className="h-3.5 skeleton w-[62%]" />
-          <div className="h-3 skeleton w-[40%]" />
+          <div className="h-3.5 skeleton w-3/5" />
+          <div className="h-3 skeleton w-2/5" />
         </div>
       </div>
     )
   }
   return (
     <div>
-      <div className="aspect-[2/3] skeleton rounded-xl mb-3.5" />
-      <div className="h-3 skeleton w-[72%] mb-1.5" />
-      <div className="h-2.5 skeleton w-[48%]" />
+      <div className="aspect-[2/3] skeleton rounded-2xl mb-3" />
+      <div className="h-3 skeleton w-[70%] mb-1.5" />
+      <div className="h-2.5 skeleton w-[45%]" />
     </div>
   )
 }

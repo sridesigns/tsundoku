@@ -8,13 +8,13 @@ export const metadata: Metadata = {
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
-    statusBarStyle: 'black-translucent',
+    statusBarStyle: 'default',
     title: 'Tsundoku',
   },
 }
 
 export const viewport: Viewport = {
-  themeColor: '#111113',
+  themeColor: '#F7F6F3',
   width: 'device-width',
   initialScale: 1,
 }
@@ -27,27 +27,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link
-          rel="preconnect"
-          href="https://fonts.googleapis.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
           href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300..700&family=Playfair+Display:wght@400..900&display=swap"
           rel="stylesheet"
         />
-        <style dangerouslySetInnerHTML={{ __html: `
-          .font-sans { font-family: 'DM Sans', system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif !important; }
-          .font-display { font-family: 'Playfair Display', Georgia, 'Times New Roman', serif !important; }
-          .font-mono { font-family: 'DM Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important; }
-        `}} />
       </head>
-      <body className="font-sans bg-[var(--color-bg)] text-[var(--color-ink)]" style={{ fontFamily: "'DM Sans', system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" }}>
+      <body className="font-sans bg-cream text-ink">
         <ClientShell>{children}</ClientShell>
       </body>
     </html>

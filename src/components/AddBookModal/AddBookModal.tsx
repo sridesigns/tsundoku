@@ -24,8 +24,7 @@ const tabs: { key: CaptureTab; label: string; icon: (active: boolean) => React.R
     key: 'type',
     label: 'Search',
     icon: (active) => (
-      <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor"
-           strokeWidth={active ? '1.8' : '1.5'} strokeLinecap="round">
+      <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth={active ? '2' : '1.5'} strokeLinecap="round">
         <circle cx="8" cy="8" r="5.5" />
         <path d="M15.5 15.5l-3-3" />
       </svg>
@@ -35,8 +34,7 @@ const tabs: { key: CaptureTab; label: string; icon: (active: boolean) => React.R
     key: 'voice',
     label: 'Voice',
     icon: (active) => (
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-           strokeWidth={active ? '1.8' : '1.5'} strokeLinecap="round">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? '2' : '1.5'} strokeLinecap="round">
         <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" />
         <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5" />
         <path d="M12 19v2" />
@@ -47,8 +45,7 @@ const tabs: { key: CaptureTab; label: string; icon: (active: boolean) => React.R
     key: 'camera',
     label: 'Camera',
     icon: (active) => (
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-           strokeWidth={active ? '1.8' : '1.5'} strokeLinecap="round" strokeLinejoin="round">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? '2' : '1.5'} strokeLinecap="round" strokeLinejoin="round">
         <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" />
         <circle cx="12" cy="13" r="4" />
       </svg>
@@ -103,8 +100,7 @@ export function AddBookModal({ isOpen, onClose }: AddBookModalProps) {
 
   const handleSelect = async (result: SearchResult) => {
     setIsAdding(true)
-    const captureMethod: CaptureMethod =
-      tab === 'camera' ? 'photo' : tab === 'voice' ? 'voice' : 'typed'
+    const captureMethod: CaptureMethod = tab === 'camera' ? 'photo' : tab === 'voice' ? 'voice' : 'typed'
     const bookData = createBookFromSearch(result, captureMethod)
     const book = await addBook(bookData)
     showToast(`Added "${result.title}"`)
@@ -147,10 +143,11 @@ export function AddBookModal({ isOpen, onClose }: AddBookModalProps) {
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 z-50 transition-all duration-400"
+        className="fixed inset-0 z-50 transition-all duration-300"
         style={{
-          backgroundColor: isVisible ? 'rgba(0,0,0,0.6)' : 'rgba(0,0,0,0)',
-          backdropFilter: isVisible ? 'blur(8px)' : 'blur(0px)',
+          backgroundColor: isVisible ? 'rgba(26, 26, 46, 0.3)' : 'rgba(26, 26, 46, 0)',
+          backdropFilter: isVisible ? 'blur(8px)' : 'blur(0)',
+          WebkitBackdropFilter: isVisible ? 'blur(8px)' : 'blur(0)',
         }}
         onClick={handleClose}
       />
@@ -159,45 +156,45 @@ export function AddBookModal({ isOpen, onClose }: AddBookModalProps) {
       <div className="fixed inset-0 z-50 flex items-end md:items-center md:justify-center pointer-events-none">
         <div
           onClick={(e) => e.stopPropagation()}
-          className={`pointer-events-auto relative w-full md:w-[540px] max-h-[92vh] md:max-h-[84vh] bg-surface border border-wire rounded-t-2xl md:rounded-2xl overflow-y-auto overscroll-contain safe-bottom transition-all duration-400 drawer-timing
+          className={`pointer-events-auto relative w-full md:w-[540px] max-h-[92vh] md:max-h-[84vh] bg-snow rounded-t-3xl md:rounded-3xl overflow-y-auto overscroll-contain safe-bottom border border-edge transition-all duration-300 drawer-timing
             ${isVisible
               ? 'translate-y-0 md:scale-100 opacity-100'
-              : 'translate-y-full md:translate-y-6 md:scale-[0.97] opacity-0'
+              : 'translate-y-full md:translate-y-4 md:scale-[0.97] opacity-0'
             }`}
-          style={{ boxShadow: '0 24px 80px rgba(0,0,0,0.55)' }}
+          style={{ boxShadow: '0 20px 60px rgba(0, 0, 0, 0.12)' }}
         >
           {/* Mobile drag handle */}
-          <div className="md:hidden flex justify-center pt-3 pb-1 sticky top-0 bg-surface z-10 border-b border-wire">
-            <div className="w-10 h-1 rounded-full bg-wire-2" />
+          <div className="md:hidden flex justify-center pt-3 pb-1">
+            <div className="w-10 h-1 rounded-full bg-edge" />
           </div>
 
-          <div className="modal-pad">
+          <div className="px-6 md:px-8 pt-5 md:pt-7 pb-8">
             {/* Header */}
-            <div className="flex items-center justify-between mb-7">
-              <h2 className="font-display text-[24px] text-ink tracking-[-0.01em]">Add a book</h2>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="font-serif text-[24px] text-ink tracking-tight">Add a book</h2>
               <button
                 onClick={handleClose}
-                className="p-2 rounded-xl text-ink-3 hover:text-ink hover:bg-raised transition-colors duration-200"
+                className="p-2 rounded-xl text-faint hover:text-ink hover:bg-fog transition-colors duration-200"
                 aria-label="Close"
               >
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
                   <path d="M15 5L5 15M5 5l10 10" />
                 </svg>
               </button>
             </div>
 
             {/* Tabs */}
-            <div className="flex gap-1 mb-7 p-1 rounded-xl bg-raised border border-wire">
+            <div className="flex gap-1 mb-6 p-1 rounded-2xl bg-fog border border-edge">
               {tabs.map((t) => {
                 const active = tab === t.key
                 return (
                   <button
                     key={t.key}
                     onClick={() => setTab(t.key)}
-                    className={`flex-1 flex items-center justify-center gap-2 py-2.5 text-[12px] font-sans rounded-lg transition-all duration-200 ${
+                    className={`flex-1 flex items-center justify-center gap-2 py-2.5 text-[12px] font-sans rounded-xl transition-all duration-200 ${
                       active
-                        ? 'bg-gold text-bg'
-                        : 'text-ink-3 hover:text-ink-2'
+                        ? 'bg-snow text-pop font-medium shadow-sm'
+                        : 'text-faint hover:text-muted'
                     }`}
                   >
                     {t.icon(active)}
@@ -220,7 +217,7 @@ export function AddBookModal({ isOpen, onClose }: AddBookModalProps) {
             )}
 
             {error && (
-              <p className="font-sans text-[12px] text-gold mt-4 text-center">{error}</p>
+              <p className="font-sans text-[12px] text-heat mt-4 text-center">{error}</p>
             )}
 
             <SearchResults results={results} isSearching={isSearching} isAdding={isAdding} onSelect={handleSelect} />

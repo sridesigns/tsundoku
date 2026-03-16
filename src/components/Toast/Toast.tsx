@@ -27,15 +27,15 @@ function ToastItem({ toast, onDismiss }: { toast: ToastData; onDismiss: (id: str
 
   return (
     <div
-      className="font-sans text-[13px] tracking-[0.01em] px-5 py-3.5 rounded-xl bg-surface border border-wire text-ink transition-all duration-350"
+      className="font-sans text-[13px] tracking-wide px-5 py-3.5 rounded-2xl bg-snow border border-edge text-ink transition-all duration-300"
       style={{
         opacity: visible ? 1 : 0,
-        transform: visible ? 'translateY(0) scale(1)' : 'translateY(8px) scale(0.97)',
-        transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+        transform: visible ? 'translateY(0) scale(1)' : 'translateY(8px) scale(0.95)',
+        transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(124, 58, 237, 0.06)',
       }}
     >
-      <span className="text-gold mr-2">✓</span>
+      <span className="text-leaf mr-2 font-medium">✓</span>
       {toast.message}
     </div>
   )

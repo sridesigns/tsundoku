@@ -28,20 +28,22 @@ function ToastItem({ toast, onDismiss }: { toast: ToastData; onDismiss: (id: str
     })
     const timer = setTimeout(() => {
       setVisible(false)
-      setTimeout(() => onDismiss(toast.id), 300)
+      setTimeout(() => onDismiss(toast.id), 400)
     }, 3000)
     return () => clearTimeout(timer)
   }, [toast.id, onDismiss])
 
   return (
     <div
-      className="font-sans text-[13px] tracking-[0.01em] px-5 py-3.5 rounded-xl bg-[var(--color-ink)] text-[var(--color-bg)] shadow-[0_8px_32px_rgba(0,0,0,0.12)] transition-all duration-300"
+      className="font-sans text-[13px] tracking-[0.01em] px-5 py-3.5 rounded-xl glass-strong text-[var(--color-ink)] transition-all duration-400"
       style={{
         opacity: visible ? 1 : 0,
-        transform: visible ? 'translateY(0) scale(1)' : 'translateY(8px) scale(0.98)',
+        transform: visible ? 'translateY(0) scale(1)' : 'translateY(8px) scale(0.96)',
         transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
+        boxShadow: visible ? '0 8px 32px rgba(0,0,0,0.3), 0 0 20px rgba(232,168,56,0.05)' : 'none',
       }}
     >
+      <span className="text-[var(--color-accent)] mr-2">&#x2713;</span>
       {toast.message}
     </div>
   )

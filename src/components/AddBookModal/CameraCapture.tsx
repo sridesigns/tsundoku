@@ -35,7 +35,6 @@ export function CameraCapture({ isProcessing, error, onCapture }: CameraCaptureP
 
   const handleCapture = useCallback(() => {
     if (!webcamRef.current) return
-    // Capture at higher resolution for better OCR
     const screenshot = webcamRef.current.getScreenshot({ width: 1920, height: 2560 })
     if (screenshot) {
       onCapture(screenshot)
@@ -45,7 +44,7 @@ export function CameraCapture({ isProcessing, error, onCapture }: CameraCaptureP
   if (cameraError) {
     return (
       <div className="flex flex-col items-center py-12 px-4">
-        <div className="w-16 h-16 flex items-center justify-center bg-[var(--color-surface-raised)] mb-4">
+        <div className="w-16 h-16 flex items-center justify-center glass rounded-2xl mb-4">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-tertiary)" strokeWidth="1.5" strokeLinecap="round">
             <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" />
             <circle cx="12" cy="13" r="4" />
@@ -62,7 +61,7 @@ export function CameraCapture({ isProcessing, error, onCapture }: CameraCaptureP
   return (
     <div className="flex flex-col items-center">
       {/* Viewfinder */}
-      <div className="w-full max-w-[300px] aspect-[3/4] bg-[var(--color-ink)] overflow-hidden relative rounded-xl">
+      <div className="w-full max-w-[300px] aspect-[3/4] bg-black overflow-hidden relative rounded-2xl border border-[var(--color-border)]">
         <Webcam
           ref={webcamRef as React.RefObject<never>}
           screenshotFormat="image/png"
@@ -80,19 +79,19 @@ export function CameraCapture({ isProcessing, error, onCapture }: CameraCaptureP
 
         {/* Loading state */}
         {!cameraReady && !cameraError && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-[var(--color-ink)]">
-            <div className="w-5 h-5 border-[1.5px] border-white/30 border-t-white/80 rounded-full animate-spin mb-3" />
-            <p className="font-sans text-[12px] text-white/60">Starting camera...</p>
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black">
+            <div className="w-5 h-5 border-[1.5px] border-[var(--color-accent)] border-t-transparent rounded-full animate-spin mb-3" />
+            <p className="font-sans text-[12px] text-[var(--color-ink-tertiary)]">Starting camera...</p>
           </div>
         )}
 
-        {/* Viewfinder guides */}
+        {/* Viewfinder guides — glowing corners */}
         {cameraReady && (
           <div className="absolute inset-4 pointer-events-none">
-            <div className="absolute top-0 left-0 w-5 h-5 border-t-2 border-l-2 border-white/50" />
-            <div className="absolute top-0 right-0 w-5 h-5 border-t-2 border-r-2 border-white/50" />
-            <div className="absolute bottom-0 left-0 w-5 h-5 border-b-2 border-l-2 border-white/50" />
-            <div className="absolute bottom-0 right-0 w-5 h-5 border-b-2 border-r-2 border-white/50" />
+            <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-[var(--color-accent)] opacity-60 rounded-tl-sm" />
+            <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-[var(--color-accent)] opacity-60 rounded-tr-sm" />
+            <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-[var(--color-accent)] opacity-60 rounded-bl-sm" />
+            <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-[var(--color-accent)] opacity-60 rounded-br-sm" />
           </div>
         )}
       </div>
@@ -105,7 +104,7 @@ export function CameraCapture({ isProcessing, error, onCapture }: CameraCaptureP
       {/* Capture button */}
       {isProcessing ? (
         <div className="flex items-center gap-2.5 py-3">
-          <div className="w-4 h-4 border-[1.5px] border-[var(--color-ink-secondary)] border-t-transparent rounded-full animate-spin" />
+          <div className="w-4 h-4 border-[1.5px] border-[var(--color-accent)] border-t-transparent rounded-full animate-spin" />
           <span className="font-sans text-[13px] text-[var(--color-ink-secondary)]">
             Reading text...
           </span>
@@ -114,7 +113,7 @@ export function CameraCapture({ isProcessing, error, onCapture }: CameraCaptureP
         <button
           onClick={handleCapture}
           disabled={!cameraReady}
-          className="px-8 py-3 text-[13px] font-sans tracking-[0.01em] bg-[var(--color-ink)] text-[var(--color-bg)] rounded-lg hover:opacity-90 transition-all duration-200 disabled:opacity-30"
+          className="px-8 py-3.5 text-[13px] font-sans tracking-[0.01em] bg-[var(--color-accent)] text-[var(--color-bg)] rounded-xl hover:shadow-[var(--shadow-glow)] transition-all duration-300 disabled:opacity-30 btn-magnetic"
         >
           Capture
         </button>

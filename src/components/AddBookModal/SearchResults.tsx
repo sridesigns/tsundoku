@@ -16,10 +16,10 @@ export function SearchResults({ results, isSearching, isAdding, onSelect }: Sear
       <div className="mt-6 space-y-0">
         {[1, 2, 3].map((i) => (
           <div key={i} className="flex items-center gap-4 py-4 border-b border-[var(--color-border)]">
-            <div className="w-11 h-[62px] skeleton shrink-0" />
-            <div className="flex-1 space-y-2">
-              <div className="h-3.5 skeleton w-[70%]" />
-              <div className="h-3 skeleton w-[45%]" />
+            <div className="w-11 h-[62px] skeleton shrink-0 rounded-lg" />
+            <div className="flex-1 space-y-2.5">
+              <div className="h-3.5 skeleton w-[70%] rounded" />
+              <div className="h-3 skeleton w-[45%] rounded" />
             </div>
           </div>
         ))}
@@ -30,8 +30,8 @@ export function SearchResults({ results, isSearching, isAdding, onSelect }: Sear
   if (results.length === 0) return null
 
   return (
-    <div className="mt-5">
-      <p className="font-mono text-[10px] tracking-[0.06em] text-[var(--color-ink-tertiary)] uppercase mb-2">
+    <div className="mt-6">
+      <p className="font-mono text-[10px] tracking-[0.08em] text-[var(--color-ink-tertiary)] uppercase mb-3">
         Results
       </p>
       <div>
@@ -45,11 +45,11 @@ export function SearchResults({ results, isSearching, isAdding, onSelect }: Sear
               key={result.open_library_key}
               onClick={() => onSelect(result)}
               disabled={isAdding}
-              className="w-full flex items-center gap-4 py-3.5 text-left border-b border-[var(--color-border)] last:border-b-0 hover:bg-[var(--color-surface-raised)] transition-colors duration-200 disabled:opacity-40 animate-fadeInUp"
+              className="w-full flex items-center gap-4 py-4 text-left border-b border-[var(--color-border)] last:border-b-0 hover:bg-[rgba(255,255,255,0.02)] transition-all duration-300 disabled:opacity-40 group animate-fadeInUp"
               style={{ animationDelay: `${i * 60}ms` }}
             >
               {/* Cover */}
-              <div className="w-12 h-[68px] bg-[var(--color-surface-raised)] shrink-0 overflow-hidden relative rounded shadow-[var(--shadow-sm)]">
+              <div className="w-12 h-[68px] bg-[var(--color-surface-raised)] shrink-0 overflow-hidden relative rounded-lg shadow-[var(--shadow-sm)]">
                 {coverUrl ? (
                   <Image
                     src={coverUrl}
@@ -70,10 +70,10 @@ export function SearchResults({ results, isSearching, isAdding, onSelect }: Sear
 
               {/* Text */}
               <div className="flex-1 min-w-0">
-                <p className="font-sans text-[14px] text-[var(--color-ink)] truncate leading-tight">
+                <p className="font-sans text-[14px] text-[var(--color-ink)] truncate leading-tight group-hover:text-[var(--color-accent)] transition-colors duration-300">
                   {result.title}
                 </p>
-                <p className="font-sans text-[12px] text-[var(--color-ink-secondary)] truncate mt-0.5">
+                <p className="font-sans text-[12px] text-[var(--color-ink-secondary)] truncate mt-1">
                   {result.author}
                 </p>
                 {result.year && (
@@ -83,8 +83,8 @@ export function SearchResults({ results, isSearching, isAdding, onSelect }: Sear
                 )}
               </div>
 
-              {/* Add indicator */}
-              <div className="shrink-0 text-[var(--color-ink-tertiary)]">
+              {/* Add indicator — glowing plus */}
+              <div className="shrink-0 text-[var(--color-ink-tertiary)] group-hover:text-[var(--color-accent)] transition-colors duration-300">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
                   <path d="M8 3v10M3 8h10" />
                 </svg>

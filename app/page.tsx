@@ -69,12 +69,13 @@ export default function CollectionPage() {
     return (
       <div>
         <header className="mb-10">
-          <h1 className="font-display text-[28px] md:text-[34px] text-[var(--color-ink)] tracking-[-0.01em]">
+          <h1 className="font-display text-[32px] md:text-[42px] text-[var(--color-ink)] tracking-[-0.02em]">
             Collection
           </h1>
+          <div className="w-12 h-[2px] bg-[var(--color-accent)] mt-3 opacity-60" />
         </header>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-          {Array.from({ length: 6 }).map((_, i) => (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-7">
+          {Array.from({ length: 8 }).map((_, i) => (
             <BookCardSkeleton key={i} viewMode="grid" />
           ))}
         </div>
@@ -89,7 +90,7 @@ export default function CollectionPage() {
         <p className="font-sans text-[14px] text-[var(--color-accent)] mb-4">{hydrationError}</p>
         <button
           onClick={() => window.location.reload()}
-          className="px-5 py-2.5 text-[13px] font-sans border border-[var(--color-border)] rounded-lg text-[var(--color-ink-secondary)] hover:border-[var(--color-ink-tertiary)] hover:text-[var(--color-ink)] transition-all duration-200"
+          className="px-5 py-2.5 text-[13px] font-sans border border-[var(--color-border)] rounded-xl text-[var(--color-ink-secondary)] hover:border-[var(--color-accent)] hover:text-[var(--color-ink)] transition-all duration-300"
         >
           Refresh page
         </button>
@@ -111,9 +112,10 @@ export default function CollectionPage() {
     <>
       {/* Header */}
       <header className="mb-8 md:mb-10">
-        <h1 className="font-display text-[28px] md:text-[34px] text-[var(--color-ink)] tracking-[-0.01em]">
+        <h1 className="font-display text-[32px] md:text-[42px] text-[var(--color-ink)] tracking-[-0.02em]">
           Collection
         </h1>
+        <div className="w-12 h-[2px] bg-[var(--color-accent)] mt-3 opacity-60" />
       </header>
 
       {/* Filters */}
@@ -130,7 +132,7 @@ export default function CollectionPage() {
 
       {/* Grid */}
       {viewMode === 'grid' ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-6 md:gap-x-6 md:gap-y-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-8 md:gap-x-7 md:gap-y-10">
           {filteredBooks.map((book, i) => (
             <BookCard
               key={book.id}
@@ -142,7 +144,7 @@ export default function CollectionPage() {
           ))}
         </div>
       ) : (
-        <div>
+        <div className="glass rounded-2xl overflow-hidden">
           {filteredBooks.map((book, i) => (
             <BookCard
               key={book.id}
@@ -155,10 +157,10 @@ export default function CollectionPage() {
         </div>
       )}
 
-      {/* FAB */}
+      {/* FAB — glowing accent button */}
       <button
         onClick={() => setIsAddOpen(true)}
-        className="fixed bottom-[88px] right-5 md:bottom-10 md:right-10 w-14 h-14 rounded-2xl bg-[var(--color-accent)] text-white shadow-[0_4px_16px_rgba(193,68,14,0.3)] hover:bg-[var(--color-accent-hover)] hover:shadow-[0_6px_20px_rgba(193,68,14,0.35)] transition-all duration-200 z-30 flex items-center justify-center active:scale-95"
+        className="fixed bottom-[96px] right-5 md:bottom-10 md:right-10 w-14 h-14 rounded-2xl bg-[var(--color-accent)] text-[var(--color-bg)] z-30 flex items-center justify-center btn-magnetic shadow-[0_4px_24px_rgba(232,168,56,0.3)] hover:shadow-[0_8px_40px_rgba(232,168,56,0.4)]"
         aria-label="Add book"
       >
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">

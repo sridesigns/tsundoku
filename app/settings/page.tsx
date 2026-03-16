@@ -72,15 +72,16 @@ export default function SettingsPage() {
   return (
     <div>
       <header className="mb-8 md:mb-10">
-        <h1 className="font-display text-[28px] md:text-[34px] text-[var(--color-ink)] tracking-[-0.01em]">
+        <h1 className="font-display text-[32px] md:text-[42px] text-[var(--color-ink)] tracking-[-0.02em]">
           Settings
         </h1>
+        <div className="w-12 h-[2px] bg-[var(--color-accent)] mt-3 opacity-60" />
       </header>
 
       {/* API Key */}
       <section className="mb-12">
         <div className="flex items-center gap-3 mb-5">
-          <h2 className="font-mono text-[10px] tracking-[0.08em] text-[var(--color-ink-tertiary)] uppercase">
+          <h2 className="font-mono text-[10px] tracking-[0.08em] text-[var(--color-accent)] uppercase">
             AI Categorization
           </h2>
           <div className="flex-1 h-px bg-[var(--color-border)]" />
@@ -95,11 +96,11 @@ export default function SettingsPage() {
             value={apiKey}
             onChange={(e) => setApiKey(e.target.value)}
             placeholder="sk-ant-..."
-            className="flex-1 px-4 py-3 text-[13px] font-mono bg-[var(--color-surface)] text-[var(--color-ink)] border border-[var(--color-border)] rounded-lg outline-none focus:border-[var(--color-ink-tertiary)] transition-colors duration-200"
+            className="flex-1 px-4 py-3 text-[13px] font-mono bg-[var(--color-surface)] text-[var(--color-ink)] border border-[var(--color-border)] rounded-xl outline-none input-glow transition-all duration-300"
           />
           <button
             onClick={handleSaveKey}
-            className="px-5 py-3 text-[13px] font-sans tracking-[0.01em] bg-[var(--color-ink)] text-[var(--color-bg)] rounded-lg hover:opacity-90 transition-all duration-200"
+            className="px-5 py-3 text-[13px] font-sans tracking-[0.01em] bg-[var(--color-accent)] text-[var(--color-bg)] rounded-xl hover:shadow-[var(--shadow-glow)] transition-all duration-300 btn-magnetic"
           >
             Save
           </button>
@@ -109,27 +110,27 @@ export default function SettingsPage() {
       {/* Storage */}
       <section className="mb-12">
         <div className="flex items-center gap-3 mb-5">
-          <h2 className="font-mono text-[10px] tracking-[0.08em] text-[var(--color-ink-tertiary)] uppercase">
+          <h2 className="font-mono text-[10px] tracking-[0.08em] text-[var(--color-accent)] uppercase">
             Storage
           </h2>
           <div className="flex-1 h-px bg-[var(--color-border)]" />
         </div>
         <div className="space-y-2 max-w-md">
-          <div className="flex items-center justify-between px-4 py-3 border border-[var(--color-border)] bg-[var(--color-surface)] rounded-lg">
+          <div className="flex items-center justify-between px-4 py-3.5 glass rounded-xl">
             <div>
               <span className="font-sans text-[14px] text-[var(--color-ink)]">IndexedDB</span>
               <p className="font-sans text-[11px] text-[var(--color-ink-tertiary)] mt-0.5">Local browser storage</p>
             </div>
             <span className="font-mono text-[10px] tracking-[0.04em] uppercase text-[var(--color-success)]">Active</span>
           </div>
-          <div className="flex items-center justify-between px-4 py-3 border border-[var(--color-border)] rounded-lg opacity-40">
+          <div className="flex items-center justify-between px-4 py-3.5 rounded-xl border border-[var(--color-border)] opacity-40">
             <div>
               <span className="font-sans text-[14px] text-[var(--color-ink)]">Notion</span>
               <p className="font-sans text-[11px] text-[var(--color-ink-tertiary)] mt-0.5">Sync with Notion database</p>
             </div>
             <span className="font-mono text-[10px] tracking-[0.04em] uppercase text-[var(--color-ink-tertiary)]">Soon</span>
           </div>
-          <div className="flex items-center justify-between px-4 py-3 border border-[var(--color-border)] rounded-lg opacity-40">
+          <div className="flex items-center justify-between px-4 py-3.5 rounded-xl border border-[var(--color-border)] opacity-40">
             <div>
               <span className="font-sans text-[14px] text-[var(--color-ink)]">Google Drive</span>
               <p className="font-sans text-[11px] text-[var(--color-ink-tertiary)] mt-0.5">Sync across devices</p>
@@ -142,7 +143,7 @@ export default function SettingsPage() {
       {/* Data */}
       <section className="mb-12">
         <div className="flex items-center gap-3 mb-5">
-          <h2 className="font-mono text-[10px] tracking-[0.08em] text-[var(--color-ink-tertiary)] uppercase">
+          <h2 className="font-mono text-[10px] tracking-[0.08em] text-[var(--color-accent)] uppercase">
             Data
           </h2>
           <div className="flex-1 h-px bg-[var(--color-border)]" />
@@ -150,20 +151,20 @@ export default function SettingsPage() {
         <div className="flex flex-wrap gap-2">
           <button
             onClick={handleExport}
-            className="px-4 py-2.5 text-[12px] font-sans tracking-[0.01em] border border-[var(--color-border)] rounded-lg text-[var(--color-ink-secondary)] hover:border-[var(--color-ink-tertiary)] hover:text-[var(--color-ink)] transition-all duration-200"
+            className="px-4 py-2.5 text-[12px] font-sans tracking-[0.01em] border border-[var(--color-border)] rounded-xl text-[var(--color-ink-secondary)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-all duration-300 btn-magnetic"
           >
             Export JSON
           </button>
           <button
             onClick={handleImport}
-            className="px-4 py-2.5 text-[12px] font-sans tracking-[0.01em] border border-[var(--color-border)] rounded-lg text-[var(--color-ink-secondary)] hover:border-[var(--color-ink-tertiary)] hover:text-[var(--color-ink)] transition-all duration-200"
+            className="px-4 py-2.5 text-[12px] font-sans tracking-[0.01em] border border-[var(--color-border)] rounded-xl text-[var(--color-ink-secondary)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-all duration-300 btn-magnetic"
           >
             Import JSON
           </button>
           {!showClearConfirm ? (
             <button
               onClick={() => setShowClearConfirm(true)}
-              className="px-4 py-2.5 text-[12px] font-sans tracking-[0.01em] border border-[var(--color-border)] rounded-lg text-[var(--color-accent)] hover:border-[var(--color-accent)] transition-all duration-200"
+              className="px-4 py-2.5 text-[12px] font-sans tracking-[0.01em] border border-[var(--color-border)] rounded-xl text-red-400 hover:border-red-400 transition-all duration-300"
             >
               Clear All Data
             </button>
@@ -171,13 +172,13 @@ export default function SettingsPage() {
             <div className="flex gap-2 animate-fadeIn">
               <button
                 onClick={handleClear}
-                className="px-4 py-2.5 text-[12px] font-sans tracking-[0.01em] bg-[var(--color-accent)] text-white rounded-lg hover:bg-[var(--color-accent-hover)] transition-colors duration-200"
+                className="px-4 py-2.5 text-[12px] font-sans tracking-[0.01em] bg-red-500 text-white rounded-xl hover:bg-red-400 transition-colors duration-200"
               >
                 Yes, clear everything
               </button>
               <button
                 onClick={() => setShowClearConfirm(false)}
-                className="px-4 py-2.5 text-[12px] font-sans tracking-[0.01em] border border-[var(--color-border)] rounded-lg text-[var(--color-ink-secondary)]"
+                className="px-4 py-2.5 text-[12px] font-sans tracking-[0.01em] border border-[var(--color-border)] rounded-xl text-[var(--color-ink-secondary)]"
               >
                 Cancel
               </button>

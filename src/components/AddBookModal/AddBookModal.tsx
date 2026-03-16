@@ -150,118 +150,122 @@ export function AddBookModal({ isOpen, onClose }: AddBookModalProps) {
       voice.resetTranscript()
       camera.reset()
       document.body.style.overflow = ''
-    }, 280)
+    }, 350)
   }
 
   if (!isOpen) return null
 
   return (
     <>
-      {/* Backdrop */}
+      {/* Backdrop — cinematic blur */}
       <div
-        className="fixed inset-0 bg-black/25 z-50 transition-opacity duration-300"
-        style={{ opacity: isVisible ? 1 : 0 }}
+        className="fixed inset-0 z-50 transition-all duration-500"
+        style={{
+          backgroundColor: isVisible ? 'rgba(0,0,0,0.7)' : 'rgba(0,0,0,0)',
+          backdropFilter: isVisible ? 'blur(12px)' : 'blur(0px)',
+        }}
         onClick={handleClose}
       />
 
-      {/* Desktop: centered modal overlay */}
+      {/* Modal — centered overlay */}
       <div
-        className="fixed inset-0 z-50 flex items-end md:items-center md:justify-center"
-        onClick={handleClose}
+        className="fixed inset-0 z-50 flex items-end md:items-center md:justify-center pointer-events-none"
       >
         <div
           onClick={(e) => e.stopPropagation()}
-          className={`relative w-full md:w-[520px] max-h-[92vh] md:max-h-[85vh] bg-[var(--color-surface)] rounded-t-2xl md:rounded-2xl overflow-y-auto overscroll-contain transition-all duration-300 drawer-timing safe-bottom
-            shadow-[0_-4px_40px_rgba(0,0,0,0.08)] md:shadow-[0_24px_80px_rgba(0,0,0,0.15),_0_8px_24px_rgba(0,0,0,0.08)]
+          className={`pointer-events-auto relative w-full md:w-[560px] max-h-[92vh] md:max-h-[85vh] rounded-t-2xl md:rounded-2xl overflow-y-auto overscroll-contain transition-all duration-500 safe-bottom glass-strong
             ${isVisible
-              ? 'translate-y-0 md:translate-y-0 md:scale-100 md:opacity-100'
-              : 'translate-y-full md:translate-y-4 md:scale-[0.98] md:opacity-0'
+              ? 'translate-y-0 md:translate-y-0 md:scale-100 opacity-100'
+              : 'translate-y-full md:translate-y-8 md:scale-[0.96] opacity-0'
             }`}
+          style={{
+            boxShadow: isVisible ? '0 32px 80px rgba(0,0,0,0.5), 0 0 60px rgba(232,168,56,0.05)' : 'none',
+          }}
         >
           {/* Mobile drag indicator */}
-          <div className="md:hidden flex justify-center pt-3 pb-1 sticky top-0 bg-[var(--color-surface)] z-10">
-            <div className="w-8 h-1 rounded-full bg-[var(--color-border-strong)]" />
+          <div className="md:hidden flex justify-center pt-3 pb-1 sticky top-0 z-10" style={{ background: 'rgba(28,28,31,0.9)', backdropFilter: 'blur(20px)' }}>
+            <div className="w-10 h-1 rounded-full bg-[var(--color-border-strong)]" />
           </div>
 
           <div className="modal-content-padding">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="font-display text-[22px] text-[var(--color-ink)] tracking-[-0.01em]">
-              Add a book
-            </h2>
-            <button
-              onClick={handleClose}
-              className="p-1 text-[var(--color-ink-tertiary)] hover:text-[var(--color-ink)] transition-colors duration-200"
-              aria-label="Close"
-            >
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                <path d="M15 5L5 15M5 5l10 10" />
-              </svg>
-            </button>
-          </div>
+            {/* Header */}
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="font-display text-[24px] text-[var(--color-ink)] tracking-[-0.01em]">
+                Add a book
+              </h2>
+              <button
+                onClick={handleClose}
+                className="p-2 rounded-xl text-[var(--color-ink-tertiary)] hover:text-[var(--color-ink)] hover:bg-[rgba(255,255,255,0.04)] transition-all duration-200"
+                aria-label="Close"
+              >
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                  <path d="M15 5L5 15M5 5l10 10" />
+                </svg>
+              </button>
+            </div>
 
-          {/* Tabs */}
-          <div className="flex gap-1 mb-6 bg-[var(--color-surface-raised)] p-1 rounded-lg">
-            {tabs.map((t) => {
-              const active = tab === t.key
-              return (
-                <button
-                  key={t.key}
-                  onClick={() => setTab(t.key)}
-                  className={`flex-1 flex items-center justify-center gap-2 py-2.5 text-[12px] font-sans tracking-[0.02em] rounded-md transition-all duration-200 ${
-                    active
-                      ? 'bg-[var(--color-surface)] text-[var(--color-ink)] shadow-[0_1px_3px_rgba(0,0,0,0.08)]'
-                      : 'text-[var(--color-ink-tertiary)] hover:text-[var(--color-ink-secondary)]'
-                  }`}
-                >
-                  {t.icon(active)}
-                  {t.label}
-                </button>
-              )
-            })}
-          </div>
+            {/* Tabs — glass segmented control */}
+            <div className="flex gap-1 mb-8 p-1 rounded-xl glass">
+              {tabs.map((t) => {
+                const active = tab === t.key
+                return (
+                  <button
+                    key={t.key}
+                    onClick={() => setTab(t.key)}
+                    className={`flex-1 flex items-center justify-center gap-2 py-3 text-[12px] font-sans tracking-[0.02em] rounded-lg transition-all duration-300 ${
+                      active
+                        ? 'bg-[var(--color-accent)] text-[var(--color-bg)] shadow-[0_0_20px_rgba(232,168,56,0.15)]'
+                        : 'text-[var(--color-ink-tertiary)] hover:text-[var(--color-ink-secondary)]'
+                    }`}
+                  >
+                    {t.icon(active)}
+                    {t.label}
+                  </button>
+                )
+              })}
+            </div>
 
-          {/* Capture area */}
-          {tab === 'type' && (
-            <TypedSearch
-              query={query}
-              onQueryChange={handleSearch}
+            {/* Capture area */}
+            {tab === 'type' && (
+              <TypedSearch
+                query={query}
+                onQueryChange={handleSearch}
+                isSearching={isSearching}
+              />
+            )}
+            {tab === 'voice' && (
+              <VoiceCapture
+                isListening={voice.isListening}
+                isSupported={voice.isSupported}
+                transcript={voice.transcript}
+                interimTranscript={voice.interimTranscript}
+                error={voice.error}
+                onStart={voice.startListening}
+                onStop={voice.stopListening}
+              />
+            )}
+            {tab === 'camera' && (
+              <CameraCapture
+                isProcessing={camera.isProcessing}
+                error={camera.error}
+                onCapture={camera.processImage}
+              />
+            )}
+
+            {/* Error */}
+            {error && (
+              <p className="font-sans text-[12px] text-[var(--color-accent)] mt-4 text-center">
+                {error}
+              </p>
+            )}
+
+            {/* Results */}
+            <SearchResults
+              results={results}
               isSearching={isSearching}
+              isAdding={isAdding}
+              onSelect={handleSelect}
             />
-          )}
-          {tab === 'voice' && (
-            <VoiceCapture
-              isListening={voice.isListening}
-              isSupported={voice.isSupported}
-              transcript={voice.transcript}
-              interimTranscript={voice.interimTranscript}
-              error={voice.error}
-              onStart={voice.startListening}
-              onStop={voice.stopListening}
-            />
-          )}
-          {tab === 'camera' && (
-            <CameraCapture
-              isProcessing={camera.isProcessing}
-              error={camera.error}
-              onCapture={camera.processImage}
-            />
-          )}
-
-          {/* Error */}
-          {error && (
-            <p className="font-sans text-[12px] text-[var(--color-accent)] mt-4 text-center">
-              {error}
-            </p>
-          )}
-
-          {/* Results */}
-          <SearchResults
-            results={results}
-            isSearching={isSearching}
-            isAdding={isAdding}
-            onSelect={handleSelect}
-          />
           </div>
         </div>
       </div>

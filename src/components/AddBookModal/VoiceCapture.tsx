@@ -22,7 +22,7 @@ export function VoiceCapture({
   if (!isSupported) {
     return (
       <div className="flex flex-col items-center py-12 px-4">
-        <div className="w-16 h-16 flex items-center justify-center bg-[var(--color-surface-raised)] mb-4">
+        <div className="w-16 h-16 flex items-center justify-center glass rounded-2xl mb-4">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-tertiary)" strokeWidth="1.5" strokeLinecap="round">
             <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" />
             <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5" />
@@ -38,20 +38,26 @@ export function VoiceCapture({
 
   return (
     <div className="flex flex-col items-center py-8">
-      {/* Mic button with pulse ring */}
+      {/* Mic button with glow ring */}
       <div className="relative">
         {isListening && (
-          <div
-            className="absolute inset-0 rounded-full bg-[var(--color-accent)]"
-            style={{ animation: 'pulse-ring 1.5s ease-out infinite' }}
-          />
+          <>
+            <div
+              className="absolute inset-0 rounded-full bg-[var(--color-accent)]"
+              style={{ animation: 'pulse-ring 1.5s ease-out infinite' }}
+            />
+            <div
+              className="absolute inset-0 rounded-full bg-[var(--color-accent)]"
+              style={{ animation: 'pulse-ring 1.5s ease-out infinite 0.5s' }}
+            />
+          </>
         )}
         <button
           onClick={isListening ? onStop : onStart}
-          className={`relative w-[72px] h-[72px] rounded-full flex items-center justify-center transition-all duration-300 ${
+          className={`relative w-[76px] h-[76px] rounded-full flex items-center justify-center transition-all duration-400 ${
             isListening
-              ? 'bg-[var(--color-accent)] text-white scale-105'
-              : 'bg-[var(--color-surface-raised)] text-[var(--color-ink-secondary)] hover:text-[var(--color-ink)] hover:bg-[var(--color-border)]'
+              ? 'bg-[var(--color-accent)] text-[var(--color-bg)] scale-110 shadow-[0_0_40px_rgba(232,168,56,0.3)]'
+              : 'glass text-[var(--color-ink-secondary)] hover:text-[var(--color-ink)] hover:shadow-[0_0_30px_rgba(232,168,56,0.1)]'
           }`}
           aria-label={isListening ? 'Stop listening' : 'Start listening'}
         >
@@ -71,7 +77,7 @@ export function VoiceCapture({
         )}
       </p>
 
-      {/* Interim transcript (what user is currently saying) */}
+      {/* Interim transcript */}
       {isListening && interimTranscript && (
         <p className="font-sans text-[14px] text-[var(--color-ink-tertiary)] italic mt-4 px-4 text-center">
           {interimTranscript}
@@ -80,7 +86,7 @@ export function VoiceCapture({
 
       {/* Final transcript */}
       {transcript && (
-        <div className="mt-5 px-4 py-3 bg-[var(--color-surface-raised)] max-w-[280px]">
+        <div className="mt-5 px-5 py-3.5 glass-accent max-w-[280px] rounded-xl">
           <p className="font-sans text-[14px] text-[var(--color-ink)] text-center">
             &ldquo;{transcript}&rdquo;
           </p>

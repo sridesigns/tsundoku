@@ -23,12 +23,12 @@ export function TypedSearch({ query, onQueryChange, isSearching }: TypedSearchPr
         onChange={(e) => onQueryChange(e.target.value)}
         placeholder="Search by title or author..."
         autoFocus
-        className="w-full pl-11 pr-10 py-3.5 text-[14px] font-sans bg-[var(--color-surface-raised)] text-[var(--color-ink)] placeholder:text-[var(--color-ink-tertiary)] border border-[var(--color-border)] rounded-lg outline-none focus:border-[var(--color-ink-tertiary)] transition-colors duration-200"
+        className="w-full pl-11 pr-10 py-4 text-[14px] font-sans bg-[var(--color-surface)] text-[var(--color-ink)] placeholder:text-[var(--color-ink-tertiary)] border border-[var(--color-border)] rounded-xl outline-none input-glow transition-all duration-300"
       />
 
       {isSearching && (
         <div className="absolute right-4 top-1/2 -translate-y-1/2">
-          <div className="w-4 h-4 border-[1.5px] border-[var(--color-ink-tertiary)] border-t-transparent rounded-full animate-spin" />
+          <div className="w-4 h-4 border-[1.5px] border-[var(--color-accent)] border-t-transparent rounded-full animate-spin" />
         </div>
       )}
     </div>

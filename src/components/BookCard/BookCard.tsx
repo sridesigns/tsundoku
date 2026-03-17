@@ -66,10 +66,10 @@ export function BookCard({ book, index, viewMode, onClick }: BookCardProps) {
   return (
     <button
       onClick={() => onClick(book)}
-      className="w-full text-left group animate-fadeInUp"
+      className="w-full max-w-[240px] text-left group animate-fadeInUp"
       style={{ animationDelay: `${delay}ms` }}
     >
-      <div className="aspect-[2/3] overflow-hidden relative mb-3 rounded-2xl cover-shadow">
+      <div className="aspect-[2/3] overflow-hidden relative mb-3.5 rounded-2xl cover-shadow">
         {book.cover_url ? (
           <Image src={book.cover_url} alt={book.title} fill sizes="(max-width:640px) 46vw, (max-width:1024px) 30vw, 22vw" className="object-cover" loading="lazy" />
         ) : (
@@ -81,12 +81,15 @@ export function BookCard({ book, index, viewMode, onClick }: BookCardProps) {
         )}
 
         {book.genre && book.genre !== 'Other' && (
-          <div className="absolute bottom-2 left-2">
-            <span className={`${genreClass(book.genre)} genre-badge font-mono text-[8px] tracking-wider uppercase px-2 py-0.5 rounded-full`}>
+          <div className="absolute bottom-2.5 left-2.5">
+            <span className={`${genreClass(book.genre)} genre-badge font-mono text-[8px] tracking-wider uppercase px-2.5 py-1 rounded-full`}>
               {book.genre}
             </span>
           </div>
         )}
+
+        {/* Hover overlay */}
+        <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-pop/20 transition-colors duration-300 pointer-events-none" />
       </div>
 
       <p className="font-sans text-[13px] text-ink font-medium truncate leading-tight group-hover:text-pop transition-colors duration-200">{book.title}</p>

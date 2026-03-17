@@ -53,29 +53,30 @@ export function FilterBar({
         </div>
       )}
 
-      {/* Sort + view toggle */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <select
-            value={sort}
-            onChange={(e) => onSortChange(e.target.value as SortOption)}
-            className="text-[12px] font-mono text-muted bg-transparent border-none outline-none cursor-pointer appearance-none pr-5 hover:text-ink transition-colors duration-200"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='8' height='5' viewBox='0 0 8 5' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l3 3 3-3' stroke='%23A0A0B0' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`,
-              backgroundRepeat: 'no-repeat',
-              backgroundPosition: 'right center',
-            }}
-          >
-            <option value="date_added">Recent</option>
-            <option value="title">Title</option>
-            <option value="author">Author</option>
-          </select>
-          <span className="font-mono text-[11px] text-faint">
-            {count} {count === 1 ? 'book' : 'books'}
-          </span>
-        </div>
+      {/* Sort + count + view toggle — compact row */}
+      <div className="flex items-center gap-3 flex-wrap">
+        <select
+          value={sort}
+          onChange={(e) => onSortChange(e.target.value as SortOption)}
+          className="text-[12px] font-mono text-muted bg-transparent border-none outline-none cursor-pointer appearance-none pr-5 hover:text-ink transition-colors duration-200"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='8' height='5' viewBox='0 0 8 5' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l3 3 3-3' stroke='%23A0A0B0' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`,
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'right center',
+          }}
+        >
+          <option value="date_added">Recent</option>
+          <option value="title">Title</option>
+          <option value="author">Author</option>
+        </select>
 
-        <div className="flex gap-0.5 p-1 rounded-xl bg-fog border border-edge">
+        <span className="w-px h-3.5 bg-edge" />
+
+        <span className="font-mono text-[11px] text-faint">
+          {count} {count === 1 ? 'book' : 'books'}
+        </span>
+
+        <div className="ml-auto flex gap-0.5 p-1 rounded-xl bg-fog border border-edge">
           <button
             onClick={() => onViewModeChange('grid')}
             className={`p-1.5 rounded-lg transition-all duration-200 ${

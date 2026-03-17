@@ -56,9 +56,10 @@ export default function CollectionPage() {
   if (isLoading) {
     return (
       <div>
-        <header className="mb-8">
-          <h1 className="font-serif text-[32px] md:text-[42px] text-ink tracking-tight">Collection</h1>
-          <div className="w-12 h-[3px] rounded-full mt-3" style={{ background: 'linear-gradient(135deg, #7C3AED, #EC4899)' }} />
+        <header className="mb-10">
+          <h1 className="font-serif text-[34px] md:text-[44px] text-ink tracking-tight leading-tight">Collection</h1>
+          <p className="font-sans text-[14px] text-muted mt-1.5">Your reading list</p>
+          <div className="w-12 h-[3px] rounded-full mt-4" style={{ background: 'linear-gradient(135deg, #7C3AED, #EC4899)' }} />
         </header>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-6">
           {Array.from({ length: 8 }).map((_, i) => <BookCardSkeleton key={i} viewMode="grid" />)}
@@ -89,9 +90,10 @@ export default function CollectionPage() {
 
   return (
     <>
-      <header className="mb-8">
-        <h1 className="font-serif text-[32px] md:text-[42px] text-ink tracking-tight">Collection</h1>
-        <div className="w-12 h-[3px] rounded-full mt-3" style={{ background: 'linear-gradient(135deg, #7C3AED, #EC4899)' }} />
+      <header className="mb-10">
+        <h1 className="font-serif text-[34px] md:text-[44px] text-ink tracking-tight leading-tight">Collection</h1>
+        <p className="font-sans text-[14px] text-muted mt-1.5">Your reading list</p>
+        <div className="w-12 h-[3px] rounded-full mt-4" style={{ background: 'linear-gradient(135deg, #7C3AED, #EC4899)' }} />
       </header>
 
       <FilterBar
